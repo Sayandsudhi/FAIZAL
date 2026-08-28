@@ -18,9 +18,17 @@ function useInView(threshold = 0.15) {
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold })
+    const mobile = window.matchMedia("(max-width: 767px)").matches
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, {
+      threshold: mobile ? 0.01 : threshold,
+      rootMargin: mobile ? "80px 0px" : "0px",
+    })
     obs.observe(el)
-    return () => obs.disconnect()
+    const fallback = mobile ? window.setTimeout(() => setInView(true), 1400) : undefined
+    return () => {
+      obs.disconnect()
+      if (fallback) window.clearTimeout(fallback)
+    }
   }, [threshold])
   return { ref, inView }
 }
@@ -66,7 +74,7 @@ function BentoCard({ children, className = "", delay = 0 }: { children: React.Re
 // ─── Pill tag ─────────────────────────────────────────────────────────────────
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] tracking-widest font-sans text-black/40 bg-black/[0.04]">
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] tracking-widest font-sans text-black/40 bg-black/[0.04] max-w-full text-center leading-relaxed max-md:whitespace-normal max-md:justify-center">
       {children}
     </span>
   )
@@ -88,20 +96,22 @@ export default function CEOExecutiveWebsite() {
     return () => clearTimeout(t)
   }, [])
 
-  // ─── Ultra 120fps GPU Lerp Scroll Zoom-Out Animation (Extended Duration) ──
+  // ─── Ultra 120fps GPU Lerp Scroll Zoom-Out Animation (desktop / tablet only) ──
   useEffect(() => {
-    let animId: number
+    if (window.matchMedia("(max-width: 767px)").matches) return
+
+    let animId = 0
     let currentScale = 1
     let currentRadius = 0
+    let running = false
 
-    const updateZoom = () => {
+    const tick = () => {
       const y = window.scrollY
-      const maxScroll = 800 // Extended scroll duration
+      const maxScroll = 800
       const progress = Math.min(Math.max(y / maxScroll, 0), 1)
-      const targetScale = 1 - progress * 0.10 // 1.0 down to 0.90
-      const targetRadius = progress * 36     // 0px up to 36px
+      const targetScale = 1 - progress * 0.10
+      const targetRadius = progress * 36
 
-      // Smooth inertia linear interpolation
       currentScale += (targetScale - currentScale) * 0.14
       currentRadius += (targetRadius - currentRadius) * 0.14
 
@@ -110,11 +120,30 @@ export default function CEOExecutiveWebsite() {
         heroCardRef.current.style.borderRadius = `${currentRadius.toFixed(2)}px`
       }
 
-      animId = requestAnimationFrame(updateZoom)
+      const settled =
+        Math.abs(targetScale - currentScale) < 0.0004 &&
+        Math.abs(targetRadius - currentRadius) < 0.05
+
+      if (settled) {
+        running = false
+        return
+      }
+      animId = requestAnimationFrame(tick)
     }
 
-    animId = requestAnimationFrame(updateZoom)
-    return () => cancelAnimationFrame(animId)
+    const onScroll = () => {
+      if (!running) {
+        running = true
+        animId = requestAnimationFrame(tick)
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    animId = requestAnimationFrame(tick)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      cancelAnimationFrame(animId)
+    }
   }, [])
 
   const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -131,7 +160,7 @@ export default function CEOExecutiveWebsite() {
   }
 
   return (
-    <div className="bg-[#F5F4F0] text-[#111] min-h-screen font-sans antialiased selection:bg-[#111] selection:text-[#F5F4F0]">
+    <div className="bg-[#F5F4F0] text-[#111] min-h-screen font-sans antialiased selection:bg-[#111] selection:text-[#F5F4F0] max-md:max-w-full">
 
       {/* ── INTRO ANIMATION (Spells FAIZAL in original massive letter reveal) ── */}
       <IntroAnimation onDone={handleIntroDone} />
@@ -140,27 +169,26 @@ export default function CEOExecutiveWebsite() {
       <MobileNav />
 
       {/* ── HERO SCROLL-SCALING STICKY CONTAINER (ZOOMS OUT ON SCROLL LIKE REFERENCE) ── */}
-      <div className="relative bg-[#0b0c0e] overflow-clip">
+      <div className="relative bg-[#F5F4F0] md:bg-[#0b0c0e] overflow-clip max-md:overflow-visible">
 
-        {/* Sticky Viewport Stage */}
-        <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        {/* Sticky on tablet/desktop; normal flow on phones so the portrait is not clipped */}
+        <div className="relative h-auto md:sticky md:top-0 md:h-screen w-full flex items-start md:items-center justify-center md:overflow-hidden max-w-full">
           <section
             ref={heroCardRef}
-            className="w-full h-full bg-[#F5F4F0] flex flex-col lg:flex-row items-center lg:items-end justify-between lg:justify-end pt-20 sm:pt-24 lg:pt-20 pb-0 px-4 sm:px-8 md:px-12 lg:px-20 overflow-y-auto lg:overflow-hidden shadow-2xl border border-black/[0.08] origin-center relative select-none"
+            className="w-full max-w-full h-auto md:h-full bg-[#F5F4F0] flex flex-col lg:flex-row items-center lg:items-end justify-between lg:justify-end pt-24 md:pt-24 lg:pt-20 pb-0 px-4 sm:px-8 md:px-12 lg:px-20 overflow-visible md:overflow-y-auto lg:overflow-hidden shadow-2xl border border-black/[0.08] origin-center relative select-none md:will-change-[transform]"
             style={{
-              willChange: "transform, border-radius",
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
             }}
           >
             {/* Ambient subtle backdrop elements */}
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-black/[0.015] rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[240px] h-[240px] md:w-[700px] md:h-[700px] bg-black/[0.015] rounded-full blur-3xl pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end relative z-20">
+            <div className="max-w-7xl mx-auto w-full min-w-0 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start lg:items-end relative z-20">
               
               {/* Left Column: CEO Title, Motto, Intro & Metrics */}
-              <div className="lg:col-span-7 flex flex-col justify-center pb-6 sm:pb-12 lg:pb-14 pt-2 sm:pt-4">
+              <div className="lg:col-span-7 flex flex-col justify-center pb-4 sm:pb-12 lg:pb-14 pt-2 sm:pt-4 min-w-0 w-full">
                 {/* Top pill badge */}
                 <div
                   className="mb-3"
@@ -171,12 +199,12 @@ export default function CEOExecutiveWebsite() {
                     transition: "opacity 0.8s ease 0ms, filter 0.8s ease 0ms, transform 0.8s ease 0ms",
                   }}
                 >
-                  <Tag>ENTREPRENEUR &bull; CEO &bull; BUSINESS LEADER &bull; WRITER</Tag>
+                  <Tag>ENTREPRENEUR • CEO • BUSINESS LEADER • WRITER</Tag>
                 </div>
 
                 {/* Main Headline */}
                 <h1
-                  className="text-4xl sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[88px] font-light text-[#111] leading-[0.96] tracking-tight mb-4 sm:mb-5"
+                  className="text-[2.15rem] sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[88px] font-light text-[#111] leading-[0.96] tracking-tight mb-4 sm:mb-5 break-words"
                   style={{
                     fontFamily: '"IBM Plex Sans", sans-serif',
                     opacity: heroReady ? 1 : 0,
@@ -215,7 +243,7 @@ export default function CEOExecutiveWebsite() {
                 </p>
 
                 {/* 3 Executive Metrics */}
-                <div className="flex flex-wrap sm:flex-nowrap gap-6 sm:gap-8 lg:gap-12 pt-4 sm:pt-6 border-t border-black/[0.06]">
+                <div className="flex flex-wrap sm:flex-nowrap gap-6 sm:gap-8 lg:gap-12 pt-4 sm:pt-6 border-t border-black/[0.06] min-w-0">
                   {[
                     { value: "6+", label: "Ventures Led" },
                     { value: "3", label: "Global Hubs (IN • UK • UAE)" },
@@ -243,7 +271,7 @@ export default function CEOExecutiveWebsite() {
 
               {/* Right Column: LARGER CEO PORTRAIT (Anchored flush to bottom, taller & scaled) */}
               <div
-                className="lg:col-span-5 flex flex-col items-center justify-end self-end w-full mt-4 lg:mt-0"
+                className="lg:col-span-5 flex flex-col items-center justify-end self-auto lg:self-end w-full min-w-0 mt-2 lg:mt-0"
                 style={{
                   opacity: heroReady ? 1 : 0,
                   filter: heroReady ? "blur(0px)" : "blur(20px)",
@@ -255,7 +283,7 @@ export default function CEOExecutiveWebsite() {
                   <img
                     src="/images/faizal-portrait.jpg"
                     alt="Muhammed Faizal Chirakkal"
-                    className="w-full max-h-[45vh] sm:max-h-[60vh] lg:max-h-[92vh] xl:max-h-[94vh] object-contain object-bottom block drop-shadow-2xl select-none"
+                    className="w-full max-w-full h-auto max-h-none md:max-h-[60vh] lg:max-h-[92vh] xl:max-h-[94vh] object-contain object-bottom block drop-shadow-2xl select-none"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/images/book-the-entrepreneur.jpg"
                     }}
@@ -275,28 +303,30 @@ export default function CEOExecutiveWebsite() {
         </div>
 
         {/* Scroll buffer track for the zoom-out animation transition */}
-        <div className="h-[85vh] pointer-events-none" />
+        <div className="hidden md:block h-[85vh] pointer-events-none" />
       </div>
 
       {/* ── PROFESSIONAL PROFILE & DUAL IDENTITY (DARK MODE BENTO) ───────────── */}
-      <section id="profile" className="py-32 px-6 md:px-12 lg:px-20 border-b border-white/10 bg-[#0c0d0f] text-white">
+      <section id="profile" data-snap-section className="py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-white/10 bg-[#0c0d0f] text-white max-md:overflow-x-clip">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <PixelIcon type="platform" size={40} />
+          <div className="mb-8 md:mb-16">
+            <span className="inline-block max-md:invert max-md:opacity-90">
+              <PixelIcon type="platform" size={40} />
+            </span>
             <div className="mt-4">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] tracking-widest font-sans text-white/70 bg-white/10 border border-white/15 backdrop-blur-md">
                 PROFESSIONAL PROFILE
               </span>
             </div>
-            <RevealText className="mt-5 text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] text-white drop-shadow-md">
+            <RevealText className="mt-5 text-[1.85rem] sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] text-white drop-shadow-md">
               {"Transforming ideas\ninto meaningful ventures."}
             </RevealText>
           </div>
 
-          <div className="grid grid-cols-12 gap-4" onMouseMove={handleMouse}>
+          <div className="grid grid-cols-12 gap-4 min-w-0" onMouseMove={handleMouse}>
             {/* Top Large Bento Card: Profile Overview with Full Arc Background */}
             <div
-              className="group relative col-span-12 p-8 md:p-12 min-h-[340px] flex flex-col justify-between overflow-hidden rounded-2xl border border-white/15 bg-white/[0.04] backdrop-blur-md shadow-xl transition-all duration-500 hover:border-white/40 hover:bg-white/[0.07] hover:-translate-y-1.5 cursor-pointer"
+              className="group relative col-span-12 p-5 sm:p-8 md:p-12 min-h-[280px] md:min-h-[340px] flex flex-col justify-between overflow-hidden rounded-2xl border border-white/15 bg-white/[0.04] backdrop-blur-md shadow-xl transition-all duration-500 hover:border-white/40 hover:bg-white/[0.07] hover:-translate-y-1.5 cursor-pointer"
             >
               <img
                 src="/images/arc.jpg"
@@ -336,7 +366,7 @@ export default function CEOExecutiveWebsite() {
 
             {/* Bottom 3 Cards: Dual Dimensions + Current Portfolio */}
             <div
-              className="group relative col-span-12 md:col-span-4 p-8 min-h-[220px] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg transition-all duration-500 hover:border-white/35 hover:bg-white/[0.08] hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between"
+              className="group relative col-span-12 md:col-span-4 p-5 sm:p-8 min-h-[180px] md:min-h-[220px] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg transition-all duration-500 hover:border-white/35 hover:bg-white/[0.08] hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="font-pixel text-[10px] text-white/40 tracking-widest mb-3 uppercase group-hover:text-white/80 transition-colors">
@@ -350,7 +380,7 @@ export default function CEOExecutiveWebsite() {
             </div>
 
             <div
-              className="group relative col-span-12 md:col-span-4 p-8 min-h-[220px] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg transition-all duration-500 hover:border-white/35 hover:bg-white/[0.08] hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between"
+              className="group relative col-span-12 md:col-span-4 p-5 sm:p-8 min-h-[180px] md:min-h-[220px] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg transition-all duration-500 hover:border-white/35 hover:bg-white/[0.08] hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="font-pixel text-[10px] text-white/40 tracking-widest mb-3 uppercase group-hover:text-white/80 transition-colors">
@@ -364,7 +394,7 @@ export default function CEOExecutiveWebsite() {
             </div>
 
             <div
-              className="group relative col-span-12 md:col-span-4 p-8 min-h-[220px] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg transition-all duration-500 hover:border-white/35 hover:bg-white/[0.08] hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between"
+              className="group relative col-span-12 md:col-span-4 p-5 sm:p-8 min-h-[180px] md:min-h-[220px] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg transition-all duration-500 hover:border-white/35 hover:bg-white/[0.08] hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="font-pixel text-[10px] text-white/40 tracking-widest mb-3 uppercase group-hover:text-white/80 transition-colors">
@@ -381,13 +411,13 @@ export default function CEOExecutiveWebsite() {
       </section>
 
       {/* ── MAJOR PROJECTS & LEADERSHIP PORTFOLIO (Stacking Cards) ─────────── */}
-      <section id="ventures" className="py-32 px-6 md:px-12 lg:px-20 border-b border-black/[0.06]">
+      <section id="ventures" data-snap-section className="py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-black/[0.06]">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-8 md:mb-16">
             <div>
               <PixelIcon type="agents" size={40} />
               <div className="mt-4"><Tag>MAJOR PROJECTS & ENTERPRISES</Tag></div>
-              <RevealText className="mt-5 text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
+              <RevealText className="mt-5 text-[1.85rem] sm:text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
                 {"Building enterprises\nacross industries."}
               </RevealText>
             </div>
@@ -404,12 +434,12 @@ export default function CEOExecutiveWebsite() {
       <CareerJourneyScroll />
 
       {/* ── THE BOOK SPOTLIGHT: THE ENTREPRENEUR ───────────────────────────── */}
-      <section id="book" className="py-32 px-6 md:px-12 lg:px-20 border-b border-black/[0.06]">
+      <section id="book" data-snap-section className="py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-black/[0.06]">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
+          <div className="mb-8 md:mb-16">
             <PixelIcon type="integrations" size={40} />
             <div className="mt-4"><Tag>THE WRITER & PUBLISHED WORK</Tag></div>
-            <RevealText className="mt-5 text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
+            <RevealText className="mt-5 text-[1.85rem] sm:text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
               {"The Entrepreneur —\nBy Faizal Muhammed."}
             </RevealText>
           </div>
@@ -447,12 +477,12 @@ export default function CEOExecutiveWebsite() {
       </section>
 
       {/* ── LEADERSHIP PRINCIPLES (6 TENETS) ──────────────────────────────── */}
-      <section id="leadership" className="py-32 px-6 md:px-12 lg:px-20 border-b border-black/[0.06]">
+      <section id="leadership" data-snap-section className="py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-black/[0.06]">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
+          <div className="mb-8 md:mb-16">
             <PixelIcon type="platform" size={40} />
             <div className="mt-4"><Tag>HIS LEADERSHIP PRINCIPLES</Tag></div>
-            <RevealText className="mt-5 text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
+            <RevealText className="mt-5 text-[1.85rem] sm:text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
               {"Leadership is\nResponsibility."}
             </RevealText>
           </div>
@@ -492,14 +522,14 @@ export default function CEOExecutiveWebsite() {
       <SpeakingConferences />
 
       {/* ── ACHIEVEMENTS, AWARDS & MEDIA ───────────────────────────────────── */}
-      <section id="media" className="py-32 px-6 md:px-12 lg:px-20 border-b border-black/[0.06]">
+      <section id="media" data-snap-section className="py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-black/[0.06]">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
             {/* Left Column: Heading & Track Record Bullet List */}
             <div className="lg:col-span-5">
               <PixelIcon type="pricing" size={40} />
               <div className="mt-4"><Tag>ACHIEVEMENTS & TRACK RECORD</Tag></div>
-              <RevealText className="mt-5 text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
+              <RevealText className="mt-5 text-[1.85rem] sm:text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
                 {"Building a journey,\nnot just a resume."}
               </RevealText>
               <div className="mt-8 space-y-3">
@@ -527,8 +557,8 @@ export default function CEOExecutiveWebsite() {
       </section>
 
       {/* ── HORIZONTAL RUNNING ANIMATION (ENGAGEMENT 1-28 CLEAN IMAGE GALLERY) ── */}
-      <section className="py-24 border-b border-black/[0.06] overflow-hidden select-none bg-[#EFECE6]">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <section data-snap-section className="py-16 md:py-24 border-b border-black/[0.06] overflow-hidden max-md:overflow-x-clip select-none bg-[#EFECE6]">
+        <div className="max-w-6xl mx-auto px-4 md:px-12 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-black/40 animate-ping" />
@@ -543,13 +573,13 @@ export default function CEOExecutiveWebsite() {
         </div>
 
         {/* Marquee Row 1: Images engagement-1 to engagement-14 (Running Left, Full Uncropped Images) */}
-        <div className="flex mb-4" style={{ animation: "marqueeLeft 50s linear infinite" }}>
+        <div data-marquee className="flex mb-4" style={{ animation: "marqueeLeft 50s linear infinite" }}>
           {[...Array(2)].map((_, rep) => (
             <div key={`row1-${rep}`} className="flex shrink-0 gap-4 pr-4">
               {Array.from({ length: 14 }, (_, i) => i + 1).map((num) => (
                 <div
                   key={`eng-r1-${rep}-${num}`}
-                  className="h-[260px] sm:h-[310px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/90 p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300"
+                  className="h-[180px] sm:h-[310px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/90 p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300"
                 >
                   <img
                     src={`/images/gallery/engagement-${num}.jpg`}
@@ -569,13 +599,13 @@ export default function CEOExecutiveWebsite() {
         </div>
 
         {/* Marquee Row 2: Images engagement-15 to engagement-28 (Running Right, Full Uncropped Images) */}
-        <div className="flex" style={{ animation: "marqueeRight 50s linear infinite" }}>
+        <div data-marquee className="flex" style={{ animation: "marqueeRight 50s linear infinite" }}>
           {[...Array(2)].map((_, rep) => (
             <div key={`row2-${rep}`} className="flex shrink-0 gap-4 pr-4">
               {Array.from({ length: 14 }, (_, i) => i + 15).map((num) => (
                 <div
                   key={`eng-r2-${rep}-${num}`}
-                  className="h-[260px] sm:h-[310px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/90 p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300"
+                  className="h-[180px] sm:h-[310px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/90 p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300"
                 >
                   <img
                     src={`/images/gallery/engagement-${num}.jpg`}
@@ -596,7 +626,7 @@ export default function CEOExecutiveWebsite() {
       </section>
 
       {/* ── VISION MANIFESTO & CTA (WITH ORIGINAL FOOTER GLASS PANELS BLUR) ─── */}
-      <section id="contact" className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden">
+      <section id="contact" data-snap-section className="relative py-16 md:py-32 px-4 md:px-12 lg:px-20 overflow-hidden">
         {/* Glass panels image — anchored to bottom center */}
         <img
           src="/images/footer.png"
@@ -627,7 +657,7 @@ export default function CEOExecutiveWebsite() {
           <div className="font-pixel text-xs text-black/40 uppercase tracking-widest mb-4">
             LET’S BUILD SOMETHING MEANINGFUL
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-6">
+          <h2 className="text-[1.85rem] sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-6">
             Great businesses begin<br />with a conversation.
           </h2>
           <p className="text-sm text-black/55 leading-relaxed mb-10 max-w-xl mx-auto font-light">
@@ -647,7 +677,7 @@ export default function CEOExecutiveWebsite() {
                 className="p-4 rounded-xl bg-white/80 border border-black/10 hover:border-black/30 backdrop-blur-md transition-all cursor-pointer group"
               >
                 <div className="text-[10px] font-mono text-black/40 tracking-wider uppercase mb-1">{desk.label}</div>
-                <div className="text-xs font-mono text-black/80 group-hover:text-black truncate">{desk.email}</div>
+                <div className="text-xs font-mono text-black/80 group-hover:text-black break-all">{desk.email}</div>
                 <div className="text-[10px] font-mono text-black/30 mt-1">
                   {copiedEmail === desk.email ? "✓ Copied" : "Click to copy"}
                 </div>
@@ -693,7 +723,7 @@ export default function CEOExecutiveWebsite() {
       </section>
 
       {/* ── FOOTER (Exact Original Theme Styling) ─────────────────────────── */}
-      <footer className="py-10 px-6 md:px-12 lg:px-20 border-t border-black/[0.06]">
+      <footer className="py-10 px-4 md:px-12 lg:px-20 border-t border-black/[0.06]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <span className="font-pixel text-xs tracking-[0.25em] text-black/60">FAIZAL CHIRAKKAL</span>
 

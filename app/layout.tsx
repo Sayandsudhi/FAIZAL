@@ -1,8 +1,15 @@
 import React from "react"
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, IBM_Plex_Sans, Courier_Prime } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+}
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -54,8 +61,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${geist.variable} ${geistMono.variable} ${courierPrime.variable} ${ibmPlexSans.variable} font-sans bg-[#F5F4F0] text-[#111] antialiased selection:bg-[#111] selection:text-[#F5F4F0]`}>
+    <html lang="en" className="scroll-smooth max-md:scroll-auto max-md:overflow-x-clip">
+      <body className={`${geist.variable} ${geistMono.variable} ${courierPrime.variable} ${ibmPlexSans.variable} font-sans bg-[#F5F4F0] text-[#111] antialiased selection:bg-[#111] selection:text-[#F5F4F0] max-md:max-w-full`}>
         {children}
         <Analytics />
       </body>

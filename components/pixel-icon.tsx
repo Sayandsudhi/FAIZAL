@@ -241,13 +241,11 @@ export function PixelIcon({ type, size = 40 }: PixelIconProps) {
     const ctx = canvas.getContext("2d")!
 
     const draw = (t: number) => {
-      const dpr = window.devicePixelRatio || 1
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width  = size * dpr
       canvas.height = size * dpr
-      ctx.scale(dpr, dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       ctx.clearRect(0, 0, size, size)
-
-      // Disable anti-aliasing for crisp pixels
       ctx.imageSmoothingEnabled = false
 
       switch (type) {
@@ -257,12 +255,39 @@ export function PixelIcon({ type, size = 40 }: PixelIconProps) {
         case "integrations":  drawIntegrations(ctx, size, t);  break
         case "pricing":       drawPricing(ctx, size, t);       break
       }
-
-      rafRef.current = requestAnimationFrame(draw)
     }
 
-    rafRef.current = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(rafRef.current)
+    const isPhone = window.matchMedia("(max-width: 767px)").matches
+    if (isPhone) {
+      draw(0)
+      return
+    }
+
+    let running = false
+    const loop = (t: number) => {
+      if (!running) return
+      draw(t)
+      rafRef.current = requestAnimationFrame(loop)
+    }
+
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (!running) {
+          running = true
+          rafRef.current = requestAnimationFrame(loop)
+        }
+      } else {
+        running = false
+        cancelAnimationFrame(rafRef.current)
+      }
+    }, { threshold: 0.01 })
+
+    obs.observe(canvas)
+    return () => {
+      running = false
+      cancelAnimationFrame(rafRef.current)
+      obs.disconnect()
+    }
   }, [type, size])
 
   return (

@@ -126,14 +126,22 @@ export function GlobalFootprint() {
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
+    const mobile = window.matchMedia("(max-width: 767px)").matches
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setInView(true)
       },
-      { threshold: 0.15 }
+      {
+        threshold: mobile ? 0.02 : 0.15,
+        rootMargin: mobile ? "80px 0px" : "0px",
+      }
     )
     obs.observe(el)
-    return () => obs.disconnect()
+    const fallback = mobile ? window.setTimeout(() => setInView(true), 1400) : undefined
+    return () => {
+      obs.disconnect()
+      if (fallback) window.clearTimeout(fallback)
+    }
   }, [])
 
   const getHubTime = (offset: number) => {
@@ -153,21 +161,24 @@ export function GlobalFootprint() {
     <section
       ref={sectionRef}
       id="international"
-      className="py-32 px-6 md:px-12 lg:px-20 border-b border-white/10 bg-[#0a0b0e] text-white relative overflow-hidden"
+      data-snap-section
+      className="py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-white/10 bg-[#0a0b0e] text-white relative overflow-hidden max-md:overflow-x-clip"
     >
       {/* Ambient background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-emerald-500/[0.03] rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[220px] h-[180px] md:w-[800px] md:h-[500px] bg-emerald-500/[0.03] rounded-full blur-[60px] md:blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* ── SECTION HEADER ── */}
-        <div className="mb-14">
-          <PixelIcon type="workflow" size={40} />
+        <div className="mb-8 md:mb-14">
+          <span className="inline-block max-md:invert max-md:opacity-90">
+            <PixelIcon type="workflow" size={40} />
+          </span>
           <div className="mt-4">
             <Tag>INTERNATIONAL FOOTPRINT &bull; GLOBAL EXPANSION</Tag>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mt-5">
-            <RevealText className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] text-white drop-shadow-md">
+            <RevealText className="text-[1.85rem] sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] text-white drop-shadow-md">
               {"From India\nto the World."}
             </RevealText>
             <p className="text-sm sm:text-base text-white/70 leading-relaxed font-light max-w-lg">
@@ -179,7 +190,7 @@ export function GlobalFootprint() {
         {/* ── GLOBAL CONNECTIVITY CORRIDOR BANNER (DARK FROSTED GLASS WITH LUMINOUS FLOW) ── */}
         <div
           onMouseMove={handleCardMouseMove}
-          className="group relative rounded-2xl border border-white/15 bg-white/[0.04] backdrop-blur-md p-8 sm:p-10 mb-8 overflow-hidden transition-all duration-500 hover:border-white/35 hover:bg-white/[0.07] shadow-xl"
+          className="group relative rounded-2xl border border-white/15 bg-white/[0.04] backdrop-blur-md p-5 sm:p-8 md:p-10 mb-8 overflow-hidden transition-all duration-500 hover:border-white/35 hover:bg-white/[0.07] shadow-xl"
         >
           {/* Subtle cursor spotlight */}
           <div
@@ -201,7 +212,7 @@ export function GlobalFootprint() {
                 </span>
               </div>
               <div
-                className="text-2xl sm:text-3xl md:text-4xl font-light text-white tracking-tight flex flex-wrap items-center gap-x-3 gap-y-1"
+                  className="text-2xl sm:text-3xl md:text-4xl font-light text-white tracking-tight flex flex-wrap items-center gap-x-3 gap-y-1 break-words"
                 style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}
               >
                 <span className="hover:text-emerald-300 transition-colors">INDIA</span>
@@ -230,7 +241,7 @@ export function GlobalFootprint() {
           {HUBS.map((hub, idx) => (
             <div
               key={hub.id}
-              className="group relative rounded-3xl border border-white/15 bg-[#111317] overflow-hidden flex flex-col justify-between min-h-[580px] shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] hover:border-white/50 hover:-translate-y-2 hover:scale-[1.015] transition-all duration-500 cursor-pointer"
+              className="group relative rounded-3xl border border-white/15 bg-[#111317] overflow-hidden flex flex-col justify-between min-h-[480px] md:min-h-[580px] shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] hover:border-white/50 hover:-translate-y-2 hover:scale-[1.015] transition-all duration-500 cursor-pointer"
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? "translateY(0px)" : "translateY(36px)",
@@ -269,12 +280,12 @@ export function GlobalFootprint() {
               </div>
 
               {/* TOP CONTENT: Watermark Number & Code Badges */}
-              <div className="relative z-10 p-6 sm:p-8 flex items-start justify-between">
+                <div className="relative z-10 p-5 sm:p-8 flex items-start justify-between">
                 <div>
                   <span className="font-pixel text-[11px] text-white/60 tracking-widest block mb-1">
                     DESTINATION {hub.num}
                   </span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-3xl drop-shadow-md">{hub.flag}</span>
                     <span className="px-2.5 py-0.5 rounded-lg bg-white/10 backdrop-blur-md text-white font-mono text-xs font-bold border border-white/20">
                       {hub.code}
@@ -287,7 +298,7 @@ export function GlobalFootprint() {
               </div>
 
               {/* BOTTOM CONTENT: Governance, Description, Ventures & Metrics */}
-              <div className="relative z-10 p-6 sm:p-8 pt-0 flex flex-col justify-end">
+              <div className="relative z-10 p-5 sm:p-8 pt-0 flex flex-col justify-end">
                 <div className="mb-4">
                   <span className="text-[10px] font-pixel uppercase tracking-wider text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-full mb-2 inline-block backdrop-blur-md">
                     {hub.tag}
@@ -309,10 +320,10 @@ export function GlobalFootprint() {
                 </p>
 
                 {/* 3 Metric Pills */}
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/10 text-center">
-                  {hub.metrics.map((m) => (
-                    <div key={m.label} className="bg-white/[0.03] p-2 rounded-xl border border-white/10">
-                      <div className="text-sm sm:text-base font-light text-white" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-4 border-t border-white/10 text-center min-w-0">
+                    {hub.metrics.map((m) => (
+                      <div key={m.label} className="bg-white/[0.03] p-2 rounded-xl border border-white/10 min-w-0">
+                        <div className="text-xs sm:text-base font-light text-white truncate" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
                         {m.value}
                       </div>
                       <div className="text-[9px] font-mono text-white/45 uppercase tracking-wider mt-0.5">

@@ -45,7 +45,7 @@ export function MediaVideoCard() {
   }, [])
 
   return (
-    <div className="group relative rounded-3xl border border-white/20 bg-[#0c0d10] p-9 sm:p-11 lg:p-12 min-h-[440px] sm:min-h-[480px] flex flex-col justify-between overflow-hidden shadow-2xl transition-all duration-500 hover:border-white/40 hover:-translate-y-1">
+    <div className="group relative rounded-3xl border border-white/20 bg-[#0c0d10] p-5 sm:p-11 lg:p-12 min-h-[360px] sm:min-h-[480px] flex flex-col justify-between overflow-hidden shadow-2xl transition-all duration-500 hover:border-white/40 hover:-translate-y-1">
       {/* Background Looping Video with Rich Contrast */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-[#0c0d10]">
         <video
@@ -63,13 +63,13 @@ export function MediaVideoCard() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/60 pointer-events-none" />
       </div>
 
-      <div className="relative z-10 font-pixel text-xs sm:text-sm text-white/80 uppercase tracking-widest flex items-center justify-between mb-4">
-        <span>VERIFIED MEDIA &amp; INSTITUTIONAL RECOGNITIONS</span>
+      <div className="relative z-10 font-pixel text-[10px] sm:text-sm text-white/80 uppercase tracking-widest flex items-center justify-between gap-3 mb-4 min-w-0">
+        <span className="min-w-0 leading-relaxed">VERIFIED MEDIA &amp; INSTITUTIONAL RECOGNITIONS</span>
         <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
       </div>
 
       <div className="relative z-10 space-y-4 sm:space-y-5 my-auto">
-        <div className="p-6 sm:p-7 rounded-2xl bg-black/45 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-colors shadow-lg">
+        <div className="p-4 sm:p-7 rounded-2xl bg-black/45 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-colors shadow-lg">
           <span className="text-[10px] sm:text-xs font-mono text-emerald-300 uppercase tracking-wider font-semibold">Press &amp; Publications</span>
           <h4 className="text-base sm:text-lg font-semibold text-white mt-1.5" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
             Cross-Border Leadership &amp; Enterprise Features
@@ -79,7 +79,7 @@ export function MediaVideoCard() {
           </p>
         </div>
 
-        <div className="p-6 sm:p-7 rounded-2xl bg-black/45 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-colors shadow-lg">
+        <div className="p-4 sm:p-7 rounded-2xl bg-black/45 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-colors shadow-lg">
           <span className="text-[10px] sm:text-xs font-mono text-emerald-300 uppercase tracking-wider font-semibold">Awards &amp; Honours</span>
           <h4 className="text-base sm:text-lg font-semibold text-white mt-1.5" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
             Entrepreneurship &amp; Executive Recognition

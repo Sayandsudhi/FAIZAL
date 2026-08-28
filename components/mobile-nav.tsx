@@ -42,20 +42,20 @@ export function MobileNav() {
 
   return (
     <div
-      className={`fixed top-4 inset-x-0 z-50 flex justify-center px-4 transition-all duration-500 ease-out pointer-events-none ${
+      className={`fixed top-4 inset-x-0 z-50 flex justify-center px-3 sm:px-4 transition-all duration-500 ease-out pointer-events-none max-md:max-w-full ${
         visible
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-8"
       }`}
     >
-      <div className="pointer-events-auto w-full max-w-4xl">
+      <div className="pointer-events-auto w-full max-w-4xl min-w-0">
 
         {/* Main bar */}
         <nav
           className="flex items-center justify-between px-5 py-3 rounded-2xl border border-black/[0.06]"
           style={NAV_STYLE}
         >
-          <a href="#" className="font-pixel text-xs tracking-[0.22em] text-black/80 hover:text-black transition-colors">
+          <a href="#" className="font-pixel text-[10px] sm:text-xs tracking-[0.18em] sm:tracking-[0.22em] text-black/80 hover:text-black transition-colors truncate">
             FAIZAL CHIRAKKAL
           </a>
 

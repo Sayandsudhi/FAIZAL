@@ -81,7 +81,7 @@ export function SpeakingConferences() {
   }
 
   return (
-    <section id="speaking" className="relative py-32 px-6 md:px-12 lg:px-20 border-b border-black/[0.06] overflow-hidden bg-black text-white">
+    <section id="speaking" data-snap-section className="relative py-16 md:py-32 px-4 md:px-12 lg:px-20 border-b border-black/[0.06] overflow-hidden max-md:overflow-x-clip bg-black text-white">
       
       {/* ── FULL BACKGROUND VIDEO (NO WHITE OVERLAY) ── */}
       <video
@@ -105,8 +105,8 @@ export function SpeakingConferences() {
       <div className="relative z-10 max-w-6xl mx-auto">
         
         {/* Top Section Header */}
-        <div className="mb-16">
-          <RevealText className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] text-white drop-shadow-md">
+        <div className="mb-8 md:mb-16">
+          <RevealText className="text-[1.85rem] sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] text-white drop-shadow-md">
             {"Ideas worth sharing\non global stages."}
           </RevealText>
         </div>
@@ -117,7 +117,7 @@ export function SpeakingConferences() {
             <div
               key={sp.topic}
               onMouseMove={handleCardMouseMove}
-              className="group relative rounded-2xl border border-white/20 p-7 overflow-hidden cursor-pointer shadow-xl transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-white/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="group relative rounded-2xl border border-white/20 p-5 sm:p-7 overflow-hidden cursor-pointer shadow-xl transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-white/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               style={{
                 background: "rgba(0, 0, 0, 0.45)",
                 backdropFilter: "blur(18px)",

@@ -28,6 +28,7 @@ export function RevealText({
     const el = ref.current
     if (!el) return
 
+    const mobile = window.matchMedia("(max-width: 767px)").matches
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,10 +36,17 @@ export function RevealText({
           observer.disconnect()
         }
       },
-      { threshold }
+      {
+        threshold: mobile ? 0.01 : threshold,
+        rootMargin: mobile ? "100px 0px" : "0px",
+      }
     )
     observer.observe(el)
-    return () => observer.disconnect()
+    const fallback = mobile ? window.setTimeout(() => setVisible(true), 1400) : undefined
+    return () => {
+      observer.disconnect()
+      if (fallback) window.clearTimeout(fallback)
+    }
   }, [threshold])
 
   // Split on spaces but preserve line breaks (rendered via <br />)
@@ -59,7 +67,7 @@ export function RevealText({
 
   return (
     // @ts-ignore — dynamic tag
-    <Tag ref={ref} className={className} style={{ display: "block", overflow: "hidden" }}>
+    <Tag ref={ref} className={className} style={{ display: "block", overflow: "hidden", maxWidth: "100%" }}>
       {words.map(({ word, index }) => {
         if (word === "\n") return <br key={`br-${index}`} />
 

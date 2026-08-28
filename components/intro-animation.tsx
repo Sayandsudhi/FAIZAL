@@ -42,7 +42,7 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
   if (phase === "done") return null
 
   return (
-    <div className="fixed inset-0 z-[100] pointer-events-none" aria-hidden="true">
+    <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden" aria-hidden="true">
 
       {/* Gradient curtain — retracts upward */}
       <div
@@ -55,8 +55,8 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
       />
 
       {/* FAIZAL letters */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex" style={{ gap: "0.06em" }}>
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden px-3">
+        <div className="flex max-w-full" style={{ gap: "0.06em" }}>
           {LETTERS.map((letter, i) => {
             const inDelay  = i * LETTER_IN_STAGGER
             const outDelay = i * LETTER_OUT_STAGGER

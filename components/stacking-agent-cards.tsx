@@ -84,16 +84,26 @@ export function StackingAgentCards() {
         }
         return count
       })
-      setDepth(nextDepth)
+      setDepth((prev) => (prev.every((v, i) => v === nextDepth[i]) ? prev : nextDepth))
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true })
+    let ticking = false
+    const onScrollRaf = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        ticking = false
+        onScroll()
+      })
+    }
+
+    window.addEventListener("scroll", onScrollRaf, { passive: true })
     onScroll()
-    return () => window.removeEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScrollRaf)
   }, [])
 
   return (
-    <div className="flex flex-col" style={{ perspective: "1400px", perspectiveOrigin: "50% 0%" }}>
+    <div className="flex flex-col md:[perspective:1400px] md:[perspective-origin:50%_0%]">
       {VENTURES.map((venture, i) => {
         const d         = depth[i]
         const scale     = 1 - d * SCALE_STEP
@@ -151,26 +161,23 @@ export function StackingAgentCards() {
                 )}
 
                 {/* Text content */}
-                <div
-                  className="relative z-10 p-8"
-                  style={{ maxWidth: venture.img ? undefined : "100%" }}
-                >
+                <div className="relative z-10 p-5 sm:p-8 min-w-0">
                   <div className="md:max-w-[55%]">
                     <div className="flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <Tag>{venture.label}</Tag>
                         <span className="text-[11px] font-mono text-black/50 bg-black/5 px-2.5 py-0.5 rounded-full">
                           {venture.role}
                         </span>
                       </div>
                     </div>
-                    <h3 className="text-xl font-light mb-3">{venture.title}</h3>
-                    <p className="text-sm text-black/45 leading-relaxed mb-8">{venture.desc}</p>
+                    <h3 className="text-xl font-light mb-3 break-words">{venture.title}</h3>
+                    <p className="text-sm text-black/45 leading-relaxed mb-6 sm:mb-8">{venture.desc}</p>
                   </div>
-                  <div className="flex gap-8 pt-6 border-t border-black/[0.06]">
+                  <div className="flex flex-wrap gap-4 sm:gap-8 pt-6 border-t border-black/[0.06] md:max-w-[55%]">
                     {venture.stats.map(s => (
-                      <div key={s.l}>
-                        <div className="text-xl font-light">{s.v}</div>
+                      <div key={s.l} className="min-w-0">
+                        <div className="text-lg sm:text-xl font-light break-words">{s.v}</div>
                         <div className="text-[11px] text-black/35 tracking-widest mt-0.5 uppercase font-mono">{s.l}</div>
                       </div>
                     ))}

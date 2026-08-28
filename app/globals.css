@@ -198,9 +198,52 @@
   50% { opacity: 0.4; transform: scale(0.8) }
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling — native finger-scroll on phones; CSS smooth only on desktop */
 html {
   scroll-behavior: smooth;
+}
+
+/* Smartphone only: native momentum scrolling. Snap + smooth-behavior fights the finger and feels laggy. */
+@media (max-width: 767px) {
+  html {
+    overflow-x: clip;
+    scroll-behavior: auto !important;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    max-width: 100%;
+    overscroll-behavior-x: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  [data-marquee] {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  [data-marquee] img {
+    max-width: none;
+  }
+
+  /* Blur filters force extra GPU layers on every scroll frame */
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .animate-ping {
+    animation: none;
+  }
 }
 
 /* Marquee animations */
