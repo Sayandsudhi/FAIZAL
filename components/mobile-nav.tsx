@@ -6,8 +6,8 @@ const NAV_LINKS = [
   { label: "Profile",     href: "#profile" },
   { label: "Ventures",    href: "#ventures" },
   { label: "Journey",     href: "#journey" },
-  { label: "Leadership",  href: "#leadership" },
   { label: "The Book",    href: "#book" },
+  { label: "Leadership",  href: "#leadership" },
   { label: "Speaking",    href: "#speaking" },
   { label: "Contact",     href: "#contact" },
 ]
