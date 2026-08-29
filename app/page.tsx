@@ -415,8 +415,7 @@ export default function CEOExecutiveWebsite() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-8 md:mb-16">
             <div>
-              <PixelIcon type="agents" size={40} />
-              <div className="mt-4"><Tag>MAJOR PROJECTS & ENTERPRISES</Tag></div>
+              <div><Tag>MAJOR PROJECTS & ENTERPRISES</Tag></div>
               <RevealText className="mt-5 text-[1.85rem] sm:text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
                 {"Building enterprises\nacross industries."}
               </RevealText>
