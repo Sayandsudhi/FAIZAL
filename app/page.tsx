@@ -553,29 +553,29 @@ export default function CEOExecutiveWebsite() {
               ].indexOf(item.title) + 1
 
               return (
-                <BentoCard key={item.title} className="relative p-6 sm:p-7 min-h-[220px] sm:min-h-[240px] flex flex-col overflow-hidden group" delay={i * 60}>
-                  {/* Subtle, light background image with soft overlay for crystal-clear text readability */}
+                <BentoCard key={item.title} className="relative p-6 sm:p-7 min-h-[220px] sm:min-h-[240px] flex flex-col overflow-hidden group bg-[#111215] border-white/10 text-white shadow-md hover:border-white/30 transition-all duration-500" delay={i * 60}>
+                  {/* Rich dark shaded photo backdrop with crystal clear text */}
                   {item.bgImage && (
                     <>
                       <img
                         src={item.bgImage}
                         alt=""
                         aria-hidden="true"
-                        className="absolute inset-0 w-full h-full object-cover object-center opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none"
+                        className="absolute inset-0 w-full h-full object-cover object-center opacity-75 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none"
                       />
                       <div
                         className="absolute inset-0 pointer-events-none"
                         style={{
-                          background: "linear-gradient(135deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.72) 100%)",
+                          background: "linear-gradient(180deg, rgba(12,13,16,0.80) 0%, rgba(12,13,16,0.52) 42%, rgba(12,13,16,0.88) 100%)",
                         }}
                       />
                     </>
                   )}
 
-                  <div className="relative z-10 flex flex-col h-full">
-                    <div className="font-pixel text-[10px] text-black/50 tracking-widest mb-3">PRINCIPLE 0{principleNum}</div>
-                    <h3 className="text-xl font-light mb-2 text-[#111]">{item.title}</h3>
-                    <p className="text-xs sm:text-sm text-black/80 font-serif italic leading-relaxed mt-auto">
+                  <div className="relative z-10 flex flex-col h-full [text-shadow:_0_1px_10px_rgba(0,0,0,0.9)]">
+                    <div className="font-pixel text-[10px] text-white/60 tracking-widest mb-3">PRINCIPLE 0{principleNum}</div>
+                    <h3 className="text-xl font-light mb-2 text-white tracking-wide">{item.title}</h3>
+                    <p className="text-xs sm:text-sm text-white/90 font-serif italic leading-relaxed mt-auto">
                       &ldquo;{item.quote}&rdquo;
                     </p>
                   </div>
