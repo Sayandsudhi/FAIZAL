@@ -527,14 +527,14 @@ export default function CEOExecutiveWebsite() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" onMouseMove={handleMouse}>
             {[
-              { type: "text" as const, title: "VISION", quote: "See possibilities before they become obvious." },
-              { type: "text" as const, title: "COURAGE", quote: "Make decisions even when certainty is unavailable." },
+              { type: "text" as const, title: "VISION", quote: "See possibilities before they become obvious.", bgImage: "/images/gallery/engagement-8.jpg" },
+              { type: "text" as const, title: "COURAGE", quote: "Make decisions even when certainty is unavailable.", bgImage: "/images/gallery/engagement-9.jpg" },
               { type: "image" as const, src: "/images/gallery/engagement-19.jpg", alt: "Leadership engagement" },
-              { type: "text" as const, title: "PEOPLE", quote: "Build capable teams and empower individuals." },
-              { type: "text" as const, title: "EXECUTION", quote: "Convert ambition into measurable outcomes." },
-              { type: "image" as const, src: "/images/gallery/engagement-28.jpg", alt: "Leadership engagement" },
-              { type: "text" as const, title: "ADAPTABILITY", quote: "Remain relevant in changing markets." },
-              { type: "text" as const, title: "LEGACY", quote: "Build organisations capable of creating value beyond the individual." },
+              { type: "text" as const, title: "PEOPLE", quote: "Build capable teams and empower individuals.", bgImage: "/images/gallery/engagement-13.jpg" },
+              { type: "text" as const, title: "EXECUTION", quote: "Convert ambition into measurable outcomes.", bgImage: "/images/gallery/engagement-26.jpg" },
+              { type: "image" as const, src: "/images/gallery/engagement-20.jpg", alt: "Leadership engagement" },
+              { type: "text" as const, title: "ADAPTABILITY", quote: "Remain relevant in changing markets.", bgImage: "/images/gallery/engagement-27.jpg" },
+              { type: "text" as const, title: "LEGACY", quote: "Build organisations capable of creating value beyond the individual.", bgImage: "/images/gallery/engagement-28.jpg" },
             ].map((item, i) => {
               if (item.type === "image") {
                 return (
@@ -542,11 +542,7 @@ export default function CEOExecutiveWebsite() {
                     <img
                       src={item.src}
                       alt={item.alt}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      onError={(e) => {
-                        const el = e.target as HTMLImageElement
-                        if (el.src !== item.fallback) el.src = item.fallback
-                      }}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 select-none"
                     />
                   </BentoCard>
                 )
@@ -557,12 +553,32 @@ export default function CEOExecutiveWebsite() {
               ].indexOf(item.title) + 1
 
               return (
-                <BentoCard key={item.title} className="p-6 sm:p-7 min-h-[220px] sm:min-h-[240px] flex flex-col" delay={i * 60}>
-                  <div className="font-pixel text-[10px] text-black/30 tracking-widest mb-3">PRINCIPLE 0{principleNum}</div>
-                  <h3 className="text-xl font-light mb-2">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-black/60 font-serif italic leading-relaxed mt-auto">
-                    &ldquo;{item.quote}&rdquo;
-                  </p>
+                <BentoCard key={item.title} className="relative p-6 sm:p-7 min-h-[220px] sm:min-h-[240px] flex flex-col overflow-hidden group" delay={i * 60}>
+                  {/* Subtle, light background image with soft overlay for crystal-clear text readability */}
+                  {item.bgImage && (
+                    <>
+                      <img
+                        src={item.bgImage}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full object-cover object-center opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700 pointer-events-none select-none"
+                      />
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: "linear-gradient(135deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.72) 100%)",
+                        }}
+                      />
+                    </>
+                  )}
+
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="font-pixel text-[10px] text-black/50 tracking-widest mb-3">PRINCIPLE 0{principleNum}</div>
+                    <h3 className="text-xl font-light mb-2 text-[#111]">{item.title}</h3>
+                    <p className="text-xs sm:text-sm text-black/80 font-serif italic leading-relaxed mt-auto">
+                      &ldquo;{item.quote}&rdquo;
+                    </p>
+                  </div>
                 </BentoCard>
               )
             })}
