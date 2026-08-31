@@ -266,6 +266,13 @@ html {
   will-change: transform;
 }
 
+.animate-marquee-left:hover,
+.animate-marquee-right:hover,
+[data-marquee]:hover,
+[data-marquee]:hover * {
+  animation-play-state: paused !important;
+}
+
 @media (max-width: 767px) {
   .animate-marquee-left {
     animation-duration: 75s !important;

@@ -651,18 +651,18 @@ export default function CEOExecutiveWebsite() {
         </div>
 
         {/* Marquee Row 1: Images 1 to 14 (Running Left, Full Uncropped Images) */}
-        <div data-marquee className="flex w-max mb-4 sm:mb-6 animate-marquee-left hover:[animation-play-state:paused]">
+        <div data-marquee className="flex w-max mb-4 sm:mb-6 animate-marquee-left">
           {[...Array(2)].map((_, rep) => (
-            <div key={`row1-${rep}`} className="flex shrink-0 gap-3 sm:gap-4 pr-3 sm:pr-4">
+            <div key={`row1-${rep}`} className="flex shrink-0 gap-3 sm:gap-4 pr-3 sm:pr-4 py-2">
               {Array.from({ length: 14 }, (_, i) => i + 1).map((num) => (
                 <div
                   key={`eng-r1-${rep}-${num}`}
-                  className="h-[230px] sm:h-[320px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/95 p-1.5 sm:p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300 shadow-sm"
+                  className="h-[230px] sm:h-[320px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/95 p-1.5 sm:p-2 flex items-center justify-center relative group cursor-pointer hover:scale-[1.04] hover:z-20 hover:shadow-2xl hover:border-black/30 transition-all duration-300 shadow-sm"
                 >
                   <img
                     src={`/images/gallery/engagement-${num}.jpg`}
                     alt={`Engagement ${num}`}
-                    className="h-full w-auto max-w-none object-contain rounded-xl block group-hover:scale-[1.02] transition-transform duration-300 select-none"
+                    className="h-full w-auto max-w-none object-contain rounded-xl block group-hover:scale-[1.06] transition-transform duration-500 ease-out select-none"
                   />
                 </div>
               ))}
@@ -671,18 +671,18 @@ export default function CEOExecutiveWebsite() {
         </div>
 
         {/* Marquee Row 2: Images 15 to 28 (Running Right, Full Uncropped Images) */}
-        <div data-marquee className="flex w-max animate-marquee-right hover:[animation-play-state:paused]">
+        <div data-marquee className="flex w-max animate-marquee-right">
           {[...Array(2)].map((_, rep) => (
-            <div key={`row2-${rep}`} className="flex shrink-0 gap-3 sm:gap-4 pr-3 sm:pr-4">
+            <div key={`row2-${rep}`} className="flex shrink-0 gap-3 sm:gap-4 pr-3 sm:pr-4 py-2">
               {Array.from({ length: 14 }, (_, i) => i + 15).map((num) => (
                 <div
                   key={`eng-r2-${rep}-${num}`}
-                  className="h-[230px] sm:h-[320px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/95 p-1.5 sm:p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300 shadow-sm"
+                  className="h-[230px] sm:h-[320px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/95 p-1.5 sm:p-2 flex items-center justify-center relative group cursor-pointer hover:scale-[1.04] hover:z-20 hover:shadow-2xl hover:border-black/30 transition-all duration-300 shadow-sm"
                 >
                   <img
                     src={`/images/gallery/engagement-${num}.jpg`}
                     alt={`Engagement ${num}`}
-                    className="h-full w-auto max-w-none object-contain rounded-xl block group-hover:scale-[1.02] transition-transform duration-300 select-none"
+                    className="h-full w-auto max-w-none object-contain rounded-xl block group-hover:scale-[1.06] transition-transform duration-500 ease-out select-none"
                   />
                 </div>
               ))}
