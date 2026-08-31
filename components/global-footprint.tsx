@@ -54,7 +54,7 @@ const HUBS: HubData[] = [
   {
     id: "uae",
     num: "02",
-    code: "AE",
+    code: "UAE",
     flag: "🇦🇪",
     country: "United Arab Emirates",
     city: "Dubai & MENA Region",
@@ -80,7 +80,7 @@ const HUBS: HubData[] = [
   {
     id: "uk",
     num: "03",
-    code: "GB",
+    code: "UK",
     flag: "🇬🇧",
     country: "United Kingdom",
     city: "London & Europe Corridor",
@@ -279,20 +279,14 @@ export function GlobalFootprint() {
                 />
               </div>
 
-              {/* TOP CONTENT: Watermark Number & Code Badges */}
-                <div className="relative z-10 p-5 sm:p-8 flex items-start justify-between">
+              {/* TOP CONTENT: Watermark Number & Hub Code */}
+              <div className="relative z-10 p-5 sm:p-8 flex items-start justify-between">
                 <div>
                   <span className="font-pixel text-[11px] text-white/60 tracking-widest block mb-1">
                     DESTINATION {hub.num}
                   </span>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-3xl drop-shadow-md">{hub.flag}</span>
-                    <span className="px-2.5 py-0.5 rounded-lg bg-white/10 backdrop-blur-md text-white font-mono text-xs font-bold border border-white/20">
-                      {hub.code}
-                    </span>
-                    <span className="text-[10px] font-mono text-white/60 bg-white/5 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10">
-                      IATA: {hub.airport}
-                    </span>
+                  <div className="text-2xl sm:text-3xl font-bold tracking-wider text-white drop-shadow-md font-mono">
+                    {hub.code}
                   </div>
                 </div>
               </div>

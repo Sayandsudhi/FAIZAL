@@ -12,6 +12,48 @@ const VENTURES = [
     img: "/images/brand/1.jpg",
   },
   {
+    label: "CREATIVE ENTERTAINMENT",
+    title: "Adam Entertainment — UAE",
+    role: "Managing Director",
+    desc: "Strengthening international presence in the dynamic UAE market. Combining creativity, commercial strategy, technology, and global audience experiences.",
+    stats: [{ v: "Dubai, UAE", l: "market" }, { v: "Cross-Border", l: "distribution" }],
+    img: "/images/brand/6.jpg",
+  },
+
+  {
+    label: "INTERNATIONAL EVENTS",
+    title: "The House of Adam Events — UK",
+    role: "Managing Director",
+    desc: "UK-based venture with an international outlook towards events, luxury cultural productions, and high-impact brand experiences across the UK and Europe.",
+    stats: [{ v: "United Kingdom", l: "headquarters" }, { v: "Global", l: "curation" }],
+    img: "/images/brand/5.jpg",
+  },
+  {
+    label: "EDUCATION",
+    title: "Adam Institute of Management and Technology Private Limited",
+    role: "CEO",
+    desc: "Developing management and technology education that prepares professionals for enterprise leadership, applied learning, and the demands of a changing business landscape.",
+    stats: [{ v: "Management", l: "discipline" }, { v: "Technology", l: "focus" }],
+    img: "/images/brand/8.jpg",
+  },
+  {
+    label: "LEGAL",
+    title: "Adam Advocates",
+    role: "CEO",
+    desc: "Building a modern legal practice focused on counsel, compliance, and commercial support for enterprises navigating complex regulatory and business environments.",
+    stats: [{ v: "Legal Allies", l: "practice" }, { v: "Corporate", l: "counsel" }],
+    img: "/images/brand/7.jpg",
+  },
+
+  {
+    label: "ENTERTAINMENT",
+    title: "Thinkstra Entertainment Limited",
+    role: "CEO",
+    desc: "Exploring creative opportunities, immersive audience experiences, and commercial strategy across the evolving creative and entertainment economy.",
+    stats: [{ v: "Creative IP", l: "domain" }, { v: "Cross-Genre", l: "productions" }],
+    img: "/images/brand/4.jpg",
+  },
+  {
     label: "HUMAN CAPITAL",
     title: "Guileless Resources and Outcomes Limited",
     role: "CEO & Managing Director",
@@ -27,38 +69,10 @@ const VENTURES = [
     stats: [{ v: "Digital Media", l: "focus" }, { v: "Strategic", l: "storytelling" }],
     img: "/images/brand/3.jpg",
   },
-  {
-    label: "ENTERTAINMENT",
-    title: "Thinkstra Entertainment Limited",
-    role: "CEO",
-    desc: "Exploring creative opportunities, immersive audience experiences, and commercial strategy across the evolving creative and entertainment economy.",
-    stats: [{ v: "Creative IP", l: "domain" }, { v: "Cross-Genre", l: "productions" }],
-    img: "/images/brand/4.jpg",
-  },
-  {
-    label: "INTERNATIONAL EVENTS",
-    title: "The House of Adam Events — UK",
-    role: "Managing Director",
-    desc: "UK-based venture with an international outlook towards events, luxury cultural productions, and high-impact brand experiences across the UK and Europe.",
-    stats: [{ v: "United Kingdom", l: "headquarters" }, { v: "Global", l: "curation" }],
-    img: "/images/brand/5.jpg",
-  },
-  {
-    label: "CREATIVE ENTERTAINMENT",
-    title: "Adam Entertainment — UAE",
-    role: "Managing Director",
-    desc: "Strengthening international presence in the dynamic UAE market. Combining creativity, commercial strategy, technology, and global audience experiences.",
-    stats: [{ v: "Dubai, UAE", l: "market" }, { v: "Cross-Border", l: "distribution" }],
-    img: "/images/brand/6.jpg",
-  },
-  {
-    label: "LEGAL",
-    title: "Lawvex Legal Allies Private Limited",
-    role: "Director",
-    desc: "Building a modern legal practice focused on counsel, compliance, and commercial support for enterprises navigating complex regulatory and business environments.",
-    stats: [{ v: "Legal Allies", l: "practice" }, { v: "Corporate", l: "counsel" }],
-    img: "/images/brand/7.jpg",
-  },
+
+
+
+
   {
     label: "PRODUCTS & OUTBOUND",
     title: "Subtantiation of Products and Outbound Tower Private Limited",
@@ -67,14 +81,7 @@ const VENTURES = [
     stats: [{ v: "Outbound", l: "operations" }, { v: "Products", l: "focus" }],
     img: "/images/brand/9.jpg",
   },
-  {
-    label: "EDUCATION",
-    title: "Adam Institute of Management and Technology Private Limited",
-    role: "CEO",
-    desc: "Developing management and technology education that prepares professionals for enterprise leadership, applied learning, and the demands of a changing business landscape.",
-    stats: [{ v: "Management", l: "discipline" }, { v: "Technology", l: "focus" }],
-    img: "/images/brand/8.jpg",
-  },
+
   {
     label: "LEGAL",
     title: "Lawvex Legal Allies Private Limited",
@@ -85,10 +92,10 @@ const VENTURES = [
   },
 ]
 
-const STICKY_TOP   = 80   // matches top: 80px on first card
-const STICKY_STEP  = 16   // each card stacks 16px lower
-const SCALE_STEP   = 0.03 // scale reduction per card stacked on top
-const OFFSET_STEP  = 6    // px pushed down per card stacked on top
+const STICKY_TOP = 80   // matches top: 80px on first card
+const STICKY_STEP = 16   // each card stacks 16px lower
+const SCALE_STEP = 0.03 // scale reduction per card stacked on top
+const OFFSET_STEP = 6    // px pushed down per card stacked on top
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
@@ -137,8 +144,8 @@ export function StackingAgentCards() {
   return (
     <div className="flex flex-col md:[perspective:1400px] md:[perspective-origin:50%_0%]">
       {VENTURES.map((venture, i) => {
-        const d         = depth[i]
-        const scale     = 1 - d * SCALE_STEP
+        const d = depth[i]
+        const scale = 1 - d * SCALE_STEP
         const translateY = d * OFFSET_STEP
 
         return (
@@ -150,10 +157,10 @@ export function StackingAgentCards() {
           >
             <div
               style={{
-                transform:      `scale(${scale}) translateY(${translateY}px)`,
+                transform: `scale(${scale}) translateY(${translateY}px)`,
                 transformOrigin: "top center",
-                transition:     "transform 0.3s cubic-bezier(0.16,1,0.3,1)",
-                willChange:     "transform",
+                transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1)",
+                willChange: "transform",
               }}
             >
               <div className="group relative bg-[#faf9f7] rounded-2xl border border-black/[0.07] overflow-hidden cursor-pointer min-h-[300px] md:min-h-[340px] flex flex-col">
