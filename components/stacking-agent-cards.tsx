@@ -75,6 +75,14 @@ const VENTURES = [
     stats: [{ v: "Management", l: "discipline" }, { v: "Technology", l: "focus" }],
     img: "/images/brand/8.jpg",
   },
+  {
+    label: "LEGAL",
+    title: "Lawvex Legal Allies Private Limited",
+    role: "Director",
+    desc: "Building a modern legal practice focused on counsel, compliance, and commercial support for enterprises navigating complex regulatory and business environments.",
+    stats: [{ v: "Legal Allies", l: "practice" }, { v: "Corporate", l: "counsel" }],
+    img: "/images/brand/10.jpg",
+  },
 ]
 
 const STICKY_TOP   = 80   // matches top: 80px on first card
