@@ -52,8 +52,34 @@ const HUBS: HubData[] = [
     ],
   },
   {
-    id: "uk",
+    id: "uae",
     num: "02",
+    code: "AE",
+    flag: "🇦🇪",
+    country: "United Arab Emirates",
+    city: "Dubai & MENA Region",
+    airport: "DXB",
+    role: "Managing Director",
+    sector: "Commercial Strategy & Global Entertainment",
+    tz: "GST",
+    utcOffset: 4.0,
+    image: "/images/dubai-hub.jpg",
+    fallback: "/images/gallery/engagement-6.jpg",
+    tag: "GCC & MENA COMMERCIAL HUB",
+    quote: "Connecting Middle Eastern commercial capital with global entertainment and media ecosystems.",
+    ventures: [
+      { name: "Adam Entertainment — UAE", tag: "Dubai Hub • Media & IP Distribution" },
+      { name: "MENA Enterprise Ventures", tag: "Middle East Corporate Development" },
+    ],
+    metrics: [
+      { value: "Dubai", label: "Commercial Hub" },
+      { value: "MENA", label: "Regional Reach" },
+      { value: "Global", label: "Trade Flow" },
+    ],
+  },
+  {
+    id: "uk",
+    num: "03",
     code: "GB",
     flag: "🇬🇧",
     country: "United Kingdom",
@@ -75,32 +101,6 @@ const HUBS: HubData[] = [
       { value: "London", label: "Operations Base" },
       { value: "Europe", label: "Event Reach" },
       { value: "Global IP", label: "Asset Value" },
-    ],
-  },
-  {
-    id: "uae",
-    num: "03",
-    code: "UAE",
-    flag: "🇦🇪",
-    country: "United Arab Emirates",
-    city: "Dubai & MENA Region",
-    airport: "DXB",
-    role: "Managing Director",
-    sector: "Commercial Strategy & Global Entertainment",
-    tz: "GST",
-    utcOffset: 4.0,
-    image: "/images/dubai-hub.jpg",
-    fallback: "/images/gallery/engagement-6.jpg",
-    tag: "GCC & MENA COMMERCIAL HUB",
-    quote: "Connecting Middle Eastern commercial capital with global entertainment and media ecosystems.",
-    ventures: [
-      { name: "Adam Entertainment — UAE", tag: "Dubai Hub • Media & IP Distribution" },
-      { name: "MENA Enterprise Ventures", tag: "Middle East Corporate Development" },
-    ],
-    metrics: [
-      { value: "Dubai", label: "Commercial Hub" },
-      { value: "MENA", label: "Regional Reach" },
-      { value: "Global", label: "Trade Flow" },
     ],
   },
 ]
@@ -182,7 +182,7 @@ export function GlobalFootprint() {
               {"From India\nto the World."}
             </RevealText>
             <p className="text-sm sm:text-base text-white/70 leading-relaxed font-light max-w-lg">
-              Faizal’s entrepreneurial leadership extends across three strategic operating hubs in India, the United Kingdom, and the United Arab Emirates.
+              Faizal’s entrepreneurial leadership extends across three strategic operating hubs in India, the United Arab Emirates, and the United Kingdom.
             </p>
           </div>
         </div>
@@ -217,9 +217,9 @@ export function GlobalFootprint() {
               >
                 <span className="hover:text-emerald-300 transition-colors">INDIA</span>
                 <span className="text-white/30 font-light">&rarr;</span>
-                <span className="hover:text-emerald-300 transition-colors">UNITED KINGDOM</span>
-                <span className="text-white/30 font-light">&rarr;</span>
                 <span className="hover:text-emerald-300 transition-colors">UAE</span>
+                <span className="text-white/30 font-light">&rarr;</span>
+                <span className="hover:text-emerald-300 transition-colors">UNITED KINGDOM</span>
                 <span className="text-white/30 font-light">&rarr;</span>
                 <span className="text-emerald-400 font-normal">GLOBAL</span>
               </div>
