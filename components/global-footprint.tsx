@@ -212,14 +212,14 @@ export function GlobalFootprint() {
                 </span>
               </div>
               <div
-                  className="text-2xl sm:text-3xl md:text-4xl font-light text-white tracking-tight flex flex-wrap items-center gap-x-3 gap-y-1 break-words"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-white tracking-tight flex flex-wrap items-center gap-x-3 gap-y-1 break-words"
                 style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}
               >
                 <span className="hover:text-emerald-300 transition-colors">INDIA</span>
                 <span className="text-white/30 font-light">&rarr;</span>
                 <span className="hover:text-emerald-300 transition-colors">UAE</span>
                 <span className="text-white/30 font-light">&rarr;</span>
-                <span className="hover:text-emerald-300 transition-colors">UNITED KINGDOM</span>
+                <span className="hover:text-emerald-300 transition-colors">UK</span>
                 <span className="text-white/30 font-light">&rarr;</span>
                 <span className="text-emerald-400 font-normal">GLOBAL</span>
               </div>
