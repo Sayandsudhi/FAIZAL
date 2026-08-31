@@ -248,10 +248,31 @@ html {
 
 /* Marquee animations */
 @keyframes marqueeLeft {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-33.333%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 @keyframes marqueeRight {
-  from { transform: translateX(-33.333%); }
-  to   { transform: translateX(0); }
+  from { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
 }
+
+.animate-marquee-left {
+  animation: marqueeLeft 90s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  animation: marqueeRight 95s linear infinite;
+  will-change: transform;
+}
+
+@media (max-width: 767px) {
+  .animate-marquee-left {
+    animation-duration: 75s !important;
+  }
+  .animate-marquee-right {
+    animation-duration: 80s !important;
+  }
+}
+
+

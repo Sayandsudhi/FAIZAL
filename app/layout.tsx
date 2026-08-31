@@ -47,11 +47,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/images/h1.jpg', type: 'image/jpeg' },
+      { url: '/images/h1.jpg', sizes: '32x32', type: 'image/jpeg' },
+      { url: '/images/h1.jpg', sizes: '192x192', type: 'image/jpeg' },
     ],
-    apple: '/apple-icon.png',
+    shortcut: '/images/h1.jpg',
+    apple: '/images/h1.jpg',
   },
 }
 
@@ -62,6 +63,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth max-md:scroll-auto max-md:overflow-x-clip">
+      <head>
+        <link rel="icon" href="/images/h1.jpg" type="image/jpeg" />
+        <link rel="apple-touch-icon" href="/images/h1.jpg" />
+      </head>
       <body className={`${geist.variable} ${geistMono.variable} ${courierPrime.variable} ${ibmPlexSans.variable} font-sans bg-[#F5F4F0] text-[#111] antialiased selection:bg-[#111] selection:text-[#F5F4F0] max-md:max-w-full`}>
         {children}
         <Analytics />

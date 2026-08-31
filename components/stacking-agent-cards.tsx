@@ -51,6 +51,30 @@ const VENTURES = [
     stats: [{ v: "Dubai, UAE", l: "market" }, { v: "Cross-Border", l: "distribution" }],
     img: "/images/brand/6.jpg",
   },
+  {
+    label: "LEGAL",
+    title: "Lawvex Legal Allies Private Limited",
+    role: "Director",
+    desc: "Building a modern legal practice focused on counsel, compliance, and commercial support for enterprises navigating complex regulatory and business environments.",
+    stats: [{ v: "Legal Allies", l: "practice" }, { v: "Corporate", l: "counsel" }],
+    img: "/images/brand/7.jpg",
+  },
+  {
+    label: "PRODUCTS & OUTBOUND",
+    title: "Subtantiation of Products and Outbound Tower Private Limited",
+    role: "Director & CEO",
+    desc: "Focused on product substantiation and outbound operations, building structured commercial pathways that connect enterprises with markets, distribution, and delivery.",
+    stats: [{ v: "Outbound", l: "operations" }, { v: "Products", l: "focus" }],
+    img: "/images/brand/9.jpg",
+  },
+  {
+    label: "EDUCATION",
+    title: "Adam Institute of Management and Technology Private Limited",
+    role: "CEO",
+    desc: "Developing management and technology education that prepares professionals for enterprise leadership, applied learning, and the demands of a changing business landscape.",
+    stats: [{ v: "Management", l: "discipline" }, { v: "Technology", l: "focus" }],
+    img: "/images/brand/8.jpg",
+  },
 ]
 
 const STICKY_TOP   = 80   // matches top: 80px on first card
@@ -124,7 +148,7 @@ export function StackingAgentCards() {
                 willChange:     "transform",
               }}
             >
-              <div className="group relative bg-[#faf9f7] rounded-2xl border border-black/[0.07] overflow-hidden cursor-pointer">
+              <div className="group relative bg-[#faf9f7] rounded-2xl border border-black/[0.07] overflow-hidden cursor-pointer min-h-[300px] md:min-h-[340px] flex flex-col">
 
                 {/* MOBILE: image top */}
                 {venture.img && (
@@ -133,9 +157,6 @@ export function StackingAgentCards() {
                       src={venture.img}
                       alt={venture.label}
                       className="max-w-full max-h-full object-contain object-center"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = `/brand/${i + 1}.jpg`
-                      }}
                     />
                   </div>
                 )}
@@ -147,9 +168,6 @@ export function StackingAgentCards() {
                       src={venture.img}
                       alt={venture.label}
                       className="max-w-[85%] max-h-[85%] object-contain object-center transition-transform duration-500 group-hover:scale-105"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = `/brand/${i + 1}.jpg`
-                      }}
                     />
                     <div
                       className="absolute inset-0 pointer-events-none"
@@ -161,7 +179,7 @@ export function StackingAgentCards() {
                 )}
 
                 {/* Text content */}
-                <div className="relative z-10 p-5 sm:p-8 min-w-0">
+                <div className="relative z-10 p-5 sm:p-8 min-w-0 flex-1 flex flex-col">
                   <div className="md:max-w-[55%]">
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -174,7 +192,7 @@ export function StackingAgentCards() {
                     <h3 className="text-xl font-light mb-3 break-words">{venture.title}</h3>
                     <p className="text-sm text-black/45 leading-relaxed mb-6 sm:mb-8">{venture.desc}</p>
                   </div>
-                  <div className="flex flex-wrap gap-4 sm:gap-8 pt-6 border-t border-black/[0.06] md:max-w-[55%]">
+                  <div className="flex flex-wrap gap-4 sm:gap-8 pt-6 border-t border-black/[0.06] md:max-w-[55%] mt-auto">
                     {venture.stats.map(s => (
                       <div key={s.l} className="min-w-0">
                         <div className="text-lg sm:text-xl font-light break-words">{s.v}</div>

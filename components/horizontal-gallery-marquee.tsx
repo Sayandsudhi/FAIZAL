@@ -192,7 +192,7 @@ export function HorizontalGalleryMarquee() {
         <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-[#141517] to-transparent z-10 pointer-events-none" />
 
         <div
-          className="flex gap-6 w-max animate-[marqueeLeft_40s_linear_infinite] group-hover:[animation-play-state:paused]"
+          className="flex gap-6 w-max animate-marquee-left group-hover:[animation-play-state:paused]"
           style={{ willChange: "transform" }}
         >
           {/* Double repeat for continuous seamless infinite loop */}
@@ -236,7 +236,7 @@ export function HorizontalGalleryMarquee() {
         <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-[#141517] to-transparent z-10 pointer-events-none" />
 
         <div
-          className="flex gap-6 w-max animate-[marqueeRight_45s_linear_infinite] group-hover:[animation-play-state:paused]"
+          className="flex gap-6 w-max animate-marquee-right group-hover:[animation-play-state:paused]"
           style={{ willChange: "transform" }}
         >
           {/* Double repeat for continuous seamless infinite loop */}

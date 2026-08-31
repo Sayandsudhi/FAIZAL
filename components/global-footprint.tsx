@@ -100,7 +100,7 @@ const HUBS: HubData[] = [
     metrics: [
       { value: "Dubai", label: "Commercial Hub" },
       { value: "MENA", label: "Regional Reach" },
-      { value: "Cross-Border", label: "Trade Flow" },
+      { value: "Global", label: "Trade Flow" },
     ],
   },
 ]
@@ -182,7 +182,7 @@ export function GlobalFootprint() {
               {"From India\nto the World."}
             </RevealText>
             <p className="text-sm sm:text-base text-white/70 leading-relaxed font-light max-w-lg">
-              Faizal’s entrepreneurial leadership spans three active global operating hubs across India, the United Kingdom, and the United Arab Emirates.
+              Faizal’s entrepreneurial leadership extends across three strategic operating hubs in India, the United Kingdom, and the United Arab Emirates.
             </p>
           </div>
         </div>
@@ -320,13 +320,13 @@ export function GlobalFootprint() {
                 </p>
 
                 {/* 3 Metric Pills */}
-                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-4 border-t border-white/10 text-center min-w-0">
-                    {hub.metrics.map((m) => (
-                      <div key={m.label} className="bg-white/[0.03] p-2 rounded-xl border border-white/10 min-w-0">
-                        <div className="text-xs sm:text-base font-light text-white truncate" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-4 border-t border-white/10 text-center min-w-0">
+                  {hub.metrics.map((m) => (
+                    <div key={m.label} className="bg-white/[0.04] p-2 rounded-xl border border-white/10 min-w-0 flex flex-col justify-center">
+                      <div className="text-[11px] sm:text-sm md:text-base font-light text-white leading-tight break-words" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
                         {m.value}
                       </div>
-                      <div className="text-[9px] font-mono text-white/45 uppercase tracking-wider mt-0.5">
+                      <div className="text-[8px] sm:text-[9px] font-mono text-white/50 uppercase tracking-wider mt-0.5 line-clamp-1">
                         {m.label}
                       </div>
                     </div>

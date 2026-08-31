@@ -82,10 +82,43 @@ function Tag({ children }: { children: React.ReactNode }) {
 
 export default function CEOExecutiveWebsite() {
   const [heroReady, setHeroReady] = useState(false)
-  const [showImageGuide, setShowImageGuide] = useState(false)
-  const [contactSubmitted, setContactSubmitted] = useState(false)
-  const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
+  const [formEmail, setFormEmail] = useState("")
+  const [formName, setFormName] = useState("")
+  const [formMessage, setFormMessage] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const heroCardRef = useRef<HTMLElement>(null)
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!formEmail) return
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formName,
+          email: formEmail,
+          message: formMessage,
+        }),
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setSubmitSuccess(true)
+      } else {
+        setSubmitError(data.error || "Failed to send message. Please try again or reach out directly.")
+      }
+    } catch (err) {
+      setSubmitError("Network error. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const handleIntroDone = useCallback(() => {
     setHeroReady(true)
@@ -341,24 +374,30 @@ export default function CEOExecutiveWebsite() {
                   }
                 }}
               />
-              {/* Soft progressive fade on left so text is crisp and readable against dark background */}
+              {/* Gradient overlay — balances visible photo features at top with darker contrast at bottom over the white podium */}
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 pointer-events-none md:hidden"
                 style={{
-                  background: "linear-gradient(to right, rgba(12,13,15,0.96) 0%, rgba(12,13,15,0.85) 45%, rgba(12,13,15,0.3) 75%, transparent 100%)",
+                  background: "linear-gradient(180deg, rgba(12,13,15,0.58) 0%, rgba(12,13,15,0.70) 28%, rgba(12,13,15,0.84) 62%, rgba(12,13,15,0.92) 100%)",
                 }}
               />
-              <div className="relative z-10 max-w-xl">
-                <div className="font-pixel text-xs text-white/60 uppercase tracking-widest mb-4">
+              <div
+                className="absolute inset-0 pointer-events-none hidden md:block"
+                style={{
+                  background: "linear-gradient(to right, rgba(12,13,15,0.95) 0%, rgba(12,13,15,0.82) 45%, rgba(12,13,15,0.25) 75%, transparent 100%)",
+                }}
+              />
+              <div className="relative z-10 max-w-xl p-4 sm:p-0 rounded-2xl bg-black/20 sm:bg-transparent border border-white/10 sm:border-none backdrop-blur-[2px] sm:backdrop-blur-none [text-shadow:_0_1px_8px_rgba(0,0,0,0.9)]">
+                <div className="font-pixel text-xs text-white/80 uppercase tracking-widest mb-3 sm:mb-4">
                   EXECUTIVE BIO
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-light mb-4 text-white">
+                <h3 className="text-xl sm:text-3xl font-light mb-3 sm:mb-4 text-white leading-snug">
                   Entrepreneur &bull; Corporate Leader &bull; Author
                 </h3>
-                <p className="text-sm text-white/80 leading-relaxed mb-4 font-light">
+                <p className="text-xs sm:text-sm text-white/90 leading-relaxed mb-3 sm:mb-4 font-light">
                   Muhammed Faizal Chirakkal is an entrepreneur, business leader and writer whose journey is defined by an enduring passion for building enterprises, creating opportunities and transforming ideas into meaningful ventures.
                 </p>
-                <p className="text-sm text-white/80 leading-relaxed font-light">
+                <p className="text-xs sm:text-sm text-white/90 leading-relaxed font-light">
                   With leadership responsibilities spanning India, the United Kingdom and the United Arab Emirates, Faizal has developed a diverse entrepreneurial portfolio across technology, human capital, media, entertainment and international events.
                 </p>
               </div>
@@ -486,23 +525,47 @@ export default function CEOExecutiveWebsite() {
             </RevealText>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" onMouseMove={handleMouse}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" onMouseMove={handleMouse}>
             {[
-              { title: "VISION", quote: "See possibilities before they become obvious." },
-              { title: "COURAGE", quote: "Make decisions even when certainty is unavailable." },
-              { title: "PEOPLE", quote: "Build capable teams and empower individuals." },
-              { title: "EXECUTION", quote: "Convert ambition into measurable outcomes." },
-              { title: "ADAPTABILITY", quote: "Remain relevant in changing markets." },
-              { title: "LEGACY", quote: "Build organisations capable of creating value beyond the individual." },
-            ].map((p, i) => (
-              <BentoCard key={p.title} className="p-8 min-h-[190px]" delay={i * 60}>
-                <div className="font-pixel text-[10px] text-black/30 tracking-widest mb-3">PRINCIPLE 0{i + 1}</div>
-                <h3 className="text-xl font-light mb-2">{p.title}</h3>
-                <p className="text-xs sm:text-sm text-black/60 font-serif italic leading-relaxed">
-                  &ldquo;{p.quote}&rdquo;
-                </p>
-              </BentoCard>
-            ))}
+              { type: "text" as const, title: "VISION", quote: "See possibilities before they become obvious." },
+              { type: "text" as const, title: "COURAGE", quote: "Make decisions even when certainty is unavailable." },
+              { type: "image" as const, src: "/images/gallery/engagement-19.jpg", alt: "Leadership engagement" },
+              { type: "text" as const, title: "PEOPLE", quote: "Build capable teams and empower individuals." },
+              { type: "text" as const, title: "EXECUTION", quote: "Convert ambition into measurable outcomes." },
+              { type: "image" as const, src: "/images/gallery/engagement-28.jpg", alt: "Leadership engagement" },
+              { type: "text" as const, title: "ADAPTABILITY", quote: "Remain relevant in changing markets." },
+              { type: "text" as const, title: "LEGACY", quote: "Build organisations capable of creating value beyond the individual." },
+            ].map((item, i) => {
+              if (item.type === "image") {
+                return (
+                  <BentoCard key={`img-${item.src}`} className="p-0 min-h-[220px] sm:min-h-[240px]" delay={i * 60}>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      onError={(e) => {
+                        const el = e.target as HTMLImageElement
+                        if (el.src !== item.fallback) el.src = item.fallback
+                      }}
+                    />
+                  </BentoCard>
+                )
+              }
+
+              const principleNum = [
+                "VISION", "COURAGE", "PEOPLE", "EXECUTION", "ADAPTABILITY", "LEGACY",
+              ].indexOf(item.title) + 1
+
+              return (
+                <BentoCard key={item.title} className="p-6 sm:p-7 min-h-[220px] sm:min-h-[240px] flex flex-col" delay={i * 60}>
+                  <div className="font-pixel text-[10px] text-black/30 tracking-widest mb-3">PRINCIPLE 0{principleNum}</div>
+                  <h3 className="text-xl font-light mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-black/60 font-serif italic leading-relaxed mt-auto">
+                    &ldquo;{item.quote}&rdquo;
+                  </p>
+                </BentoCard>
+              )
+            })}
           </div>
 
           {/* Leader Quote Banner */}
@@ -571,25 +634,19 @@ export default function CEOExecutiveWebsite() {
           </div>
         </div>
 
-        {/* Marquee Row 1: Images engagement-1 to engagement-14 (Running Left, Full Uncropped Images) */}
-        <div data-marquee className="flex mb-4" style={{ animation: "marqueeLeft 50s linear infinite" }}>
+        {/* Marquee Row 1: Images 1 to 14 (Running Left, Full Uncropped Images) */}
+        <div data-marquee className="flex w-max mb-4 sm:mb-6 animate-marquee-left hover:[animation-play-state:paused]">
           {[...Array(2)].map((_, rep) => (
-            <div key={`row1-${rep}`} className="flex shrink-0 gap-4 pr-4">
+            <div key={`row1-${rep}`} className="flex shrink-0 gap-3 sm:gap-4 pr-3 sm:pr-4">
               {Array.from({ length: 14 }, (_, i) => i + 1).map((num) => (
                 <div
                   key={`eng-r1-${rep}-${num}`}
-                  className="h-[180px] sm:h-[310px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/90 p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300"
+                  className="h-[230px] sm:h-[320px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/95 p-1.5 sm:p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300 shadow-sm"
                 >
                   <img
                     src={`/images/gallery/engagement-${num}.jpg`}
                     alt={`Engagement ${num}`}
                     className="h-full w-auto max-w-none object-contain rounded-xl block group-hover:scale-[1.02] transition-transform duration-300 select-none"
-                    onError={(e) => {
-                      const el = e.target as HTMLImageElement
-                      if (!el.src.includes(`/gallery/engagement-${num}.jpg`)) {
-                        el.src = `/gallery/engagement-${num}.jpg`
-                      }
-                    }}
                   />
                 </div>
               ))}
@@ -597,25 +654,19 @@ export default function CEOExecutiveWebsite() {
           ))}
         </div>
 
-        {/* Marquee Row 2: Images engagement-15 to engagement-28 (Running Right, Full Uncropped Images) */}
-        <div data-marquee className="flex" style={{ animation: "marqueeRight 50s linear infinite" }}>
+        {/* Marquee Row 2: Images 15 to 28 (Running Right, Full Uncropped Images) */}
+        <div data-marquee className="flex w-max animate-marquee-right hover:[animation-play-state:paused]">
           {[...Array(2)].map((_, rep) => (
-            <div key={`row2-${rep}`} className="flex shrink-0 gap-4 pr-4">
+            <div key={`row2-${rep}`} className="flex shrink-0 gap-3 sm:gap-4 pr-3 sm:pr-4">
               {Array.from({ length: 14 }, (_, i) => i + 15).map((num) => (
                 <div
                   key={`eng-r2-${rep}-${num}`}
-                  className="h-[180px] sm:h-[310px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/90 p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300"
+                  className="h-[230px] sm:h-[320px] shrink-0 rounded-2xl overflow-hidden border border-black/[0.08] bg-white/95 p-1.5 sm:p-2 flex items-center justify-center relative group hover:shadow-xl hover:border-black/[0.18] transition-all duration-300 shadow-sm"
                 >
                   <img
                     src={`/images/gallery/engagement-${num}.jpg`}
                     alt={`Engagement ${num}`}
                     className="h-full w-auto max-w-none object-contain rounded-xl block group-hover:scale-[1.02] transition-transform duration-300 select-none"
-                    onError={(e) => {
-                      const el = e.target as HTMLImageElement
-                      if (!el.src.includes(`/gallery/engagement-${num}.jpg`)) {
-                        el.src = `/gallery/engagement-${num}.jpg`
-                      }
-                    }}
                   />
                 </div>
               ))}
@@ -663,61 +714,151 @@ export default function CEOExecutiveWebsite() {
             Whether you are interested in business partnerships, international opportunities, speaking engagements, media enquiries, or literary discussions, Faizal welcomes meaningful dialogues.
           </p>
 
-          {/* Quick email copies */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10 text-left">
-            {[
-              { label: "PARTNERSHIPS", email: "partnerships@faizalchirakkal.com" },
-              { label: "INTERNATIONAL (UK / UAE)", email: "international@faizalchirakkal.com" },
-              { label: "AUTHOR & SPEAKING", email: "author@faizalchirakkal.com" },
-            ].map((desk) => (
-              <div
-                key={desk.label}
-                onClick={() => copyEmail(desk.email)}
-                className="p-4 rounded-xl bg-white/80 border border-black/10 hover:border-black/30 backdrop-blur-md transition-all cursor-pointer group"
-              >
-                <div className="text-[10px] font-mono text-black/40 tracking-wider uppercase mb-1">{desk.label}</div>
-                <div className="text-xs font-mono text-black/80 group-hover:text-black break-all">{desk.email}</div>
-                <div className="text-[10px] font-mono text-black/30 mt-1">
-                  {copiedEmail === desk.email ? "✓ Copied" : "Click to copy"}
-                </div>
+          {/* Direct Email & Phone Action Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 max-w-xl mx-auto text-left">
+            <a
+              href="mailto:faizal@adamgroup.ae"
+              className="p-5 rounded-2xl bg-white/85 border border-black/10 hover:border-black/30 hover:bg-white hover:shadow-lg backdrop-blur-md transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-mono text-black/40 tracking-wider uppercase">Direct Email</span>
+                <span className="text-black/30 group-hover:text-black transition-colors">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </span>
               </div>
-            ))}
+              <div className="text-sm font-mono font-medium text-black/85 group-hover:text-black break-all">
+                faizal@adamgroup.ae
+              </div>
+            </a>
+
+            <a
+              href="tel:+917590000200"
+              className="p-5 rounded-2xl bg-white/85 border border-black/10 hover:border-black/30 hover:bg-white hover:shadow-lg backdrop-blur-md transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-mono text-black/40 tracking-wider uppercase">Direct Line</span>
+                <span className="text-black/30 group-hover:text-black transition-colors">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </span>
+              </div>
+              <div className="text-sm font-mono font-medium text-black/85 group-hover:text-black">
+                +91 75900 00200
+              </div>
+            </a>
           </div>
 
-          {/* Interactive message form */}
-          {!contactSubmitted ? (
+          {/* Interactive Executive Contact Form */}
+          {!submitSuccess ? (
             <form
-              onSubmit={(e) => { e.preventDefault(); setContactSubmitted(true) }}
-              className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto"
+              onSubmit={handleContactSubmit}
+              className="max-w-lg mx-auto bg-white/90 border border-black/10 rounded-2xl p-5 sm:p-6 backdrop-blur-md shadow-md text-left transition-all"
             >
-              <input
-                type="email"
-                placeholder="your@email.com"
-                required
-                className="flex-1 bg-white border border-black/10 rounded-xl px-4 py-3 text-sm text-[#111] placeholder:text-black/25 focus:outline-none focus:border-black/30 transition-colors"
-              />
-              <button
-                type="submit"
-                className="px-8 py-3 bg-[#111] text-white text-xs uppercase rounded-xl hover:bg-[#333] transition-colors tracking-widest font-medium cursor-pointer"
-              >
-                CONNECT
-              </button>
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-black/[0.06]">
+                <span className="text-[11px] font-mono uppercase tracking-widest text-black/50">
+                  Send a Direct Message
+                </span>
+                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-600/20 px-2 py-0.5 rounded-full">
+                  Direct to CEO Inbox
+                </span>
+              </div>
+
+              {submitError && (
+                <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                  <span>{submitError}</span>
+                </div>
+              )}
+
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-mono uppercase tracking-wider text-black/50 mb-1">
+                      Your Name / Company
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. John Doe / Venture Corp"
+                      value={formName}
+                      onChange={(e) => setFormName(e.target.value)}
+                      className="w-full bg-white border border-black/10 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-[#111] placeholder:text-black/30 focus:outline-none focus:border-black/40 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-mono uppercase tracking-wider text-black/50 mb-1">
+                      Your Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="your@email.com"
+                      required
+                      value={formEmail}
+                      onChange={(e) => setFormEmail(e.target.value)}
+                      className="w-full bg-white border border-black/10 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-[#111] placeholder:text-black/30 focus:outline-none focus:border-black/40 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-mono uppercase tracking-wider text-black/50 mb-1">
+                    Message / Purpose of Engagement
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Enter your message, partnership proposal, speaking inquiry, or note here..."
+                    value={formMessage}
+                    onChange={(e) => setFormMessage(e.target.value)}
+                    className="w-full bg-white border border-black/10 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-[#111] placeholder:text-black/30 focus:outline-none focus:border-black/40 transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full mt-2 py-3.5 bg-[#111] text-white text-xs uppercase rounded-xl hover:bg-[#2b2b2b] active:scale-[0.99] transition-all tracking-widest font-medium cursor-pointer flex items-center justify-center gap-2 shadow-sm disabled:opacity-60"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>TRANSMITTING INQUIRY...</span>
+                    </>
+                  ) : (
+                    <span>CONNECT WITH FAIZAL &rarr;</span>
+                  )}
+                </button>
+              </div>
             </form>
           ) : (
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-emerald-600/20 bg-emerald-50 text-emerald-800 text-sm font-medium">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              {"Thank you. Your message has been received."}
+            <div className="max-w-md mx-auto p-6 rounded-2xl bg-white/95 border border-emerald-500/30 shadow-lg text-center backdrop-blur-md">
+              <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+                ✓
+              </div>
+              <div className="text-xs font-mono uppercase tracking-widest text-emerald-700 font-semibold mb-1">
+                Inquiry Dispatched
+              </div>
+              <h3 className="text-lg font-light text-[#111] mb-2">
+                Thank you. Your message has been received.
+              </h3>
+              <p className="text-xs text-black/60 leading-relaxed mb-5 font-light">
+                Your communication has been forwarded to the Executive Office of Muhammed Faizal Chirakkal at <strong className="text-black/80 font-mono">faizal@adamgroup.ae</strong>.
+              </p>
+              <button
+                onClick={() => {
+                  setSubmitSuccess(false)
+                  setFormEmail("")
+                  setFormName("")
+                  setFormMessage("")
+                }}
+                className="text-xs font-mono tracking-wider uppercase text-black/60 hover:text-black border-b border-black/20 pb-0.5 transition-colors cursor-pointer"
+              >
+                Send another message &rarr;
+              </button>
             </div>
           )}
-
-          {/* Social Profiles */}
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-12 pt-8 border-t border-black/[0.06] text-xs font-mono text-black/50">
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors">LinkedIn</a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors">Instagram</a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors">Facebook</a>
-            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors">YouTube</a>
-            <a href="https://x.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors">X (Twitter)</a>
-          </div>
         </div>
       </section>
 
@@ -741,8 +882,8 @@ export default function CEOExecutiveWebsite() {
             ))}
           </div>
 
-          <div className="text-xs text-black/40 font-mono">
-            Govt Cyberpark, Kozhikode &bull; London &bull; Dubai
+          <div className="text-xs text-black/40 font-mono tracking-wider">
+            INDIA &bull; UAE &bull; UK
           </div>
         </div>
         <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-black/[0.04] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-black/30">

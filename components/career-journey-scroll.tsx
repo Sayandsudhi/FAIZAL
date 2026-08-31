@@ -40,13 +40,13 @@ const STAGES = [
   {
     step: "04",
     num: "4",
-    line1: "The",
-    line2: "Writer",
-    headline: "Literary Identity",
-    tag: "AUTHOR OF THE ENTREPRENEUR",
-    desc: "Authoring 'The Entrepreneur' under Faizal Muhammed, reflecting on mindset, courage, uncertainty, resilience, risk, and the discipline of building what does not yet exist.",
-    image: "/images/book-the-entrepreneur.jpg",
-    fallback: "/images/book-the-entrepreneur.jpg",
+    line1: "The Ecosystem",
+    line2: "Architect",
+    headline: "Enterprise Ecosystems",
+    tag: "FUTURE ENTERPRISE & VALUE",
+    desc: "Unifying technology infrastructure, talent incubation, creative media platforms, and cross-border networks into sustainable, high-impact enterprise ecosystems.",
+    image: "/images/gallery/engagement-11.jpg",
+    fallback: "/images/gallery/engagement-11.jpg",
   },
 ]
 
@@ -73,10 +73,7 @@ function StageCardBody({ stage }: { stage: Stage }) {
 
       <div className="min-w-0 overflow-visible">
         <div className="flex items-center justify-between gap-2 mb-2 min-w-0">
-          <span className="font-pixel text-[11px] text-white/50 uppercase tracking-widest shrink-0">
-            STAGE {stage.step}
-          </span>
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full truncate min-w-0">
+          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full truncate min-w-0">
             {stage.headline}
           </span>
         </div>
@@ -88,11 +85,6 @@ function StageCardBody({ stage }: { stage: Stage }) {
         <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
           {stage.desc}
         </p>
-      </div>
-
-      <div className="mt-auto pt-4 md:mt-5 md:pt-3.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/40 shrink-0">
-        <span>Stage {stage.step} of 04</span>
-        <span className="text-white/60">Scroll &darr;</span>
       </div>
     </>
   )
@@ -291,7 +283,7 @@ export function CareerJourneyScroll() {
                       {isCurrent && (
                         <span className="inline-flex items-center gap-2 text-[10px] text-white/60 uppercase tracking-widest font-sans font-normal whitespace-nowrap">
                           <span className="w-6 h-[1px] bg-white/40 inline-block" />
-                          Career Stage
+                          Evolution
                         </span>
                       )}
                     </button>

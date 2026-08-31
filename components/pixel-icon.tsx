@@ -257,12 +257,6 @@ export function PixelIcon({ type, size = 40 }: PixelIconProps) {
       }
     }
 
-    const isPhone = window.matchMedia("(max-width: 767px)").matches
-    if (isPhone) {
-      draw(0)
-      return
-    }
-
     let running = false
     const loop = (t: number) => {
       if (!running) return
