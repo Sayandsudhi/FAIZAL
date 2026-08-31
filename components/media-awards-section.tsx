@@ -4,9 +4,9 @@ import React from "react"
 
 const ACHIEVEMENTS = [
   "Building a diversified entrepreneurial portfolio across technology, media, human capital, and entertainment.",
-  "Assuming executive leadership positions across India, the United Kingdom, and the United Arab Emirates.",
+  "Assuming executive leadership positions across India, the United Arab Emirates, and the United Kingdom.",
   "Leading high-growth technology initiatives from Government Cyberpark, Kozhikode, Kerala.",
-  "Establishing an international dimension to creative and corporate events in the UK and UAE.",
+  "Establishing an international dimension to creative and corporate events in the UAE and UK.",
   "Developing sustainable human capital infrastructure connecting talent with economic possibilities.",
   "Developing a distinct literary identity as Faizal Muhammed and authoring 'The Entrepreneur'.",
   "Cultivating cross-border commercial alliances and technology export frameworks.",
@@ -19,7 +19,7 @@ const MEDIA_TYPES = [
     title: "Building Across Borders: The Multi-Sector Entrepreneurial Vision",
     outlet: "International Business Review",
     date: "Featured Coverage",
-    desc: "In-depth profile exploring enterprise creation, cross-border leadership across India, UK, and UAE, and the author's philosophy in 'The Entrepreneur'.",
+    desc: "In-depth profile exploring enterprise creation, cross-border leadership across India, UAE, and UK, and the author's philosophy in 'The Entrepreneur'.",
   },
   {
     type: "Leadership Dialogue",

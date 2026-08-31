@@ -18,7 +18,7 @@ const ibmPlexSans = IBM_Plex_Sans({ weight: ["300", "400", "500", "600"], subset
 
 export const metadata: Metadata = {
   title: 'Muhammed Faizal Chirakkal — Entrepreneur, CEO, Business Leader & Author',
-  description: 'Official portfolio of Muhammed Faizal Chirakkal (known in writings as Faizal Muhammed), CEO & Managing Director across India, UK, and UAE. Author of "The Entrepreneur". Think Beyond Business. Build Beyond Boundaries.',
+  description: 'Official portfolio of Muhammed Faizal Chirakkal (known in writings as Faizal Muhammed), CEO & Managing Director across India, UAE, and UK. Author of "The Entrepreneur". Think Beyond Business. Build Beyond Boundaries.',
   keywords: [
     'Muhammed Faizal Chirakkal',
     'Faizal Muhammed',

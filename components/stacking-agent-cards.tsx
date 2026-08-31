@@ -143,7 +143,7 @@ export function StackingAgentCards() {
 
         return (
           <div
-            key={venture.title}
+            key={`${venture.title}-${i}`}
             ref={el => { cardRefs.current[i] = el }}
             className="sticky mb-4"
             style={{ top: `${STICKY_TOP + i * STICKY_STEP}px`, zIndex: 10 + i }}

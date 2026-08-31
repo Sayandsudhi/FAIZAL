@@ -272,14 +272,14 @@ export default function CEOExecutiveWebsite() {
                     transition: "opacity 0.9s ease 250ms, transform 0.9s ease 250ms",
                   }}
                 >
-                  Known in his writings as <strong className="text-black/85 font-medium">Faizal Muhammed</strong>, author of <em>The Entrepreneur</em>. Leading strategic enterprises across technology, human capital, media, entertainment, and international events in India, the UK, and the UAE.
+                  Known in his writings as <strong className="text-black/85 font-medium">Faizal Muhammed</strong>, author of <em>The Entrepreneur</em>. Leading strategic enterprises across technology, human capital, media, entertainment, and international events in India, the UAE, and the UK.
                 </p>
 
                 {/* 3 Executive Metrics */}
                 <div className="flex flex-wrap sm:flex-nowrap gap-6 sm:gap-8 lg:gap-12 pt-4 sm:pt-6 border-t border-black/[0.06] min-w-0">
                   {[
                     { value: "6+", label: "Ventures Led" },
-                    { value: "3", label: "Global Hubs (IN • UK • UAE)" },
+                    { value: "3", label: "Global Hubs (IN • UAE • UK)" },
                     { value: "1", label: "Published Book" },
                   ].map((stat, i) => (
                     <div
@@ -398,7 +398,7 @@ export default function CEOExecutiveWebsite() {
                   Muhammed Faizal Chirakkal is an entrepreneur, business leader and writer whose journey is defined by an enduring passion for building enterprises, creating opportunities and transforming ideas into meaningful ventures.
                 </p>
                 <p className="text-xs sm:text-sm text-white/90 leading-relaxed font-light">
-                  With leadership responsibilities spanning India, the United Kingdom and the United Arab Emirates, Faizal has developed a diverse entrepreneurial portfolio across technology, human capital, media, entertainment and international events.
+                  With leadership responsibilities spanning India, the United Arab Emirates, and the United Kingdom, Faizal has developed a diverse entrepreneurial portfolio across technology, human capital, media, entertainment and international events.
                 </p>
               </div>
             </div>
@@ -460,7 +460,7 @@ export default function CEOExecutiveWebsite() {
               </RevealText>
             </div>
             <p className="text-sm text-black/45 leading-relaxed max-w-xs">
-              Executive leadership spanning India, the United Kingdom, and the United Arab Emirates.
+              Executive leadership spanning India, the United Arab Emirates, and the United Kingdom.
             </p>
           </div>
 
@@ -613,7 +613,7 @@ export default function CEOExecutiveWebsite() {
               <div className="mt-8 space-y-3">
                 {[
                   "Diversified portfolio across tech, media, human capital, and entertainment",
-                  "Executive leadership spanning India, UK, and UAE",
+                  "Executive leadership spanning India, UAE, and UK",
                   "Technology enterprise operations at Government Cyberpark, Kozhikode",
                   "Author of 'The Entrepreneur' under literary identity Faizal Muhammed",
                   "Building cross-border trade, alliances, and export-oriented ventures",
@@ -774,12 +774,9 @@ export default function CEOExecutiveWebsite() {
               onSubmit={handleContactSubmit}
               className="max-w-lg mx-auto bg-white/90 border border-black/10 rounded-2xl p-5 sm:p-6 backdrop-blur-md shadow-md text-left transition-all"
             >
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-black/[0.06]">
+              <div className="mb-4 pb-2 border-b border-black/[0.06]">
                 <span className="text-[11px] font-mono uppercase tracking-widest text-black/50">
                   Send a Direct Message
-                </span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-600/20 px-2 py-0.5 rounded-full">
-                  Direct to CEO Inbox
                 </span>
               </div>
 

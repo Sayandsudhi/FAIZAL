@@ -33,7 +33,7 @@ const STAGES = [
     line2: "Leader",
     headline: "Multi-Sector Executive",
     tag: "EXECUTIVE LEADERSHIP",
-    desc: "Executive leadership across technology, human capital, media, entertainment, and international events spanning India, the United Kingdom, and the United Arab Emirates.",
+    desc: "Executive leadership across technology, human capital, media, entertainment, and international events spanning India, the United Arab Emirates, and the United Kingdom.",
     image: "/images/gallery/engagement-3.jpg",
     fallback: "/images/engagement/3.jpg",
   },

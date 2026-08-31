@@ -62,7 +62,7 @@ export function DualIdentityCard() {
                 Muhammed Faizal Chirakkal is an entrepreneur and business leader whose journey is defined by an enduring passion for building enterprises, creating opportunities, and transforming ideas into meaningful ventures.
               </p>
               <p className="text-sm sm:text-base text-black/70 leading-relaxed font-light">
-                With leadership responsibilities spanning India, the United Kingdom, and the United Arab Emirates, Faizal has developed a diverse entrepreneurial portfolio across technology, human capital, media, entertainment, and international events.
+                With leadership responsibilities spanning India, the United Arab Emirates, and the United Kingdom, Faizal has developed a diverse entrepreneurial portfolio across technology, human capital, media, entertainment, and international events.
               </p>
               
               <div className="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-black/10">
@@ -72,7 +72,7 @@ export function DualIdentityCard() {
                 </div>
                 <div className="p-3 rounded-xl bg-[#FAF9F6] border border-black/5">
                   <div className="text-xs text-black/40 font-mono">REGIONS</div>
-                  <div className="text-sm font-semibold text-[#141517] mt-1">India • UK • UAE</div>
+                  <div className="text-sm font-semibold text-[#141517] mt-1">India • UAE • UK</div>
                 </div>
                 <div className="p-3 rounded-xl bg-[#FAF9F6] border border-black/5">
                   <div className="text-xs text-black/40 font-mono">KEY VENTURES</div>
