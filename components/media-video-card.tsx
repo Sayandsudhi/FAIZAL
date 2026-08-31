@@ -82,12 +82,15 @@ export function MediaVideoCard() {
   return (
     <div
       onClick={handleVideoClick}
-      className="relative rounded-3xl border border-black/[0.08] bg-[#0c0d10] min-h-[300px] sm:min-h-[460px] lg:min-h-[500px] overflow-hidden shadow-2xl group cursor-pointer"
+      className="relative w-full aspect-video rounded-2xl sm:rounded-3xl border border-black/[0.08] overflow-hidden shadow-xl sm:shadow-2xl group cursor-pointer bg-transparent"
+      style={{
+        transform: "translateZ(0)",
+        WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+      }}
     >
       <video
         ref={videoRef}
         src="/video2.mp4"
-        poster="/images/arc.jpg"
         autoPlay
         loop
         muted
@@ -103,7 +106,7 @@ export function MediaVideoCard() {
           }
         }}
         onError={() => setHasError(true)}
-        className="absolute inset-0 w-full h-full object-cover object-center select-none"
+        className="w-full h-full object-cover object-center rounded-2xl sm:rounded-3xl select-none block"
       >
         <source src="/video2.mp4" type="video/mp4" />
       </video>
