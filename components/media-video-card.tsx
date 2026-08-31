@@ -107,14 +107,6 @@ export function MediaVideoCard() {
       >
         <source src="/video2.mp4" type="video/mp4" />
       </video>
-
-      {/* Elegant glass overlay badge at bottom */}
-      <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between pointer-events-none">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-mono text-white/80">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>EXECUTIVE MEDIA &bull; ENGAGEMENTS</span>
-        </div>
-      </div>
     </div>
   )
 }
